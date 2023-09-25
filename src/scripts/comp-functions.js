@@ -1,18 +1,20 @@
 import { CONSTANTS } from "./constants.js";
-import { parseTsFromId } from "./utils.js";
+import {
+  addActiveEntryListener,
+  addDateListener,
+  clearControlListeners,
+  setItemActive,
+} from "./listeners.js";
+import { makeSelectable } from "./utils.js";
 
 function addAbsenceEntry() {
-  const elemCount =
-    document.getElementsByClassName(CONSTANTS.CLASS_NAMES.ABSENCE_ENTRY)
-      .length || 0;
-  const elemIdx = Date.now();
-
   const absenceEntry = document.createElement("div");
+  const elemIdx = Date.now();
+  const absenceList = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRY_LIST);
+
   absenceEntry.classList.add("mb-3");
   absenceEntry.classList.add("row");
   absenceEntry.classList.add(CONSTANTS.CLASS_NAMES.ABSENCE_ENTRY);
-
-  const absenceList = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRY_LIST);
 
   for (let control of [
     { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
@@ -35,11 +37,43 @@ function addAbsenceEntry() {
     absenceEntry.append(absenceControl);
   }
 
+  addActiveEntryListener(absenceEntry);
+  makeSelectable(absenceEntry);
+
   absenceList.append(absenceEntry);
 }
 
 function deleteAbsenceEntry() {
-  alert("Deleting!");
+  const trashElem = document.querySelector(
+    `#${CONSTANTS.IDS.BTN_DELETE_ABSENCE}`
+  );
+  const isDisabled = trashElem.classList.contains(
+    CONSTANTS.CLASS_NAMES.ICON_DISABLED
+  );
+
+  if (isDisabled) {
+    return;
+  }
+
+  const activeEntry = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
+  );
+
+  if (!activeEntry) {
+    return;
+  }
+
+  clearControlListeners(activeEntry);
+
+  const prevSibling = activeEntry.nextElementSibling;
+
+  activeEntry.remove();
+
+  if (prevSibling) {
+    setItemActive(prevSibling);
+  } else {
+    setTrashActive(false);
+  }
 }
 
 function createAbsenceControl({ type, inputType, idx, ...otherProps }) {
@@ -54,7 +88,7 @@ function createAbsenceControl({ type, inputType, idx, ...otherProps }) {
     inputType,
     id: `${type}-${idx}`,
     type,
-    classListArr: ["form-control"],
+    classListArr: ["form-control", type],
     ...otherProps,
   });
 
@@ -93,7 +127,7 @@ function createControl({
   }
 
   if (inputType === "date") {
-    appendDateListener({ elem: inputElem, type });
+    addDateListener(inputElem);
   }
 
   return { inputElem };
@@ -113,42 +147,62 @@ function appendAbsenceOptions(selectElem) {
   }
 }
 
-function appendDateListener({ elem, type }) {
-  const prop =
-    type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
-      ? "min"
-      : type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
-      ? "max"
-      : null;
+function updateEntrySelectionOnPage(e) {
+  const elemsUnderCursor = document.elementsFromPoint(e.x, e.y);
+  const skipClear = elemsUnderCursor.some(
+    (e) =>
+      e.classList.contains(CONSTANTS.CLASS_NAMES.CLICKABLE) ||
+      e.classList.contains(CONSTANTS.CLASS_NAMES.SELECTABLE)
+  );
 
-  if (!prop) {
+  if (skipClear) {
     return;
   }
 
-  const siblingName =
-    type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
-      ? CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
-      : type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
-      ? CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
-      : null;
-
-  const siblingIdTs = parseTsFromId(elem.id);
-  const siblingId = `${siblingName}-${siblingIdTs}`;
-
-  elem.addEventListener("change", (e) => {
-    const siblingDate = document.getElementById(siblingId);
-    siblingDate.min = null;
-    siblingDate.max = null;
-    siblingDate[prop] = e.target.value;
-  });
+  clearEntrySelection();
 }
 
-function markActiveEntry(e) {
-  console.log(e.target);
+function clearEntrySelection() {
+  const elem = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
+  );
+
+  if (elem) {
+    elem.classList.remove(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
+  }
+
+  setTrashActive(false);
 }
 
-function onFromDateChange(e) {
-  console.log(e.target.value);
+function setTrashActive(active = false) {
+  const trashElem = document.querySelector(
+    `#${CONSTANTS.IDS.BTN_DELETE_ABSENCE}`
+  );
+
+  if (!trashElem) {
+    return;
+  }
+
+  const isDisabled = trashElem.classList.contains(
+    CONSTANTS.CLASS_NAMES.ICON_DISABLED
+  );
+
+  const skip = (isDisabled && !active) || (!isDisabled && active);
+
+  if (skip) {
+    return;
+  }
+
+  if (active) {
+    trashElem.classList.remove(CONSTANTS.CLASS_NAMES.ICON_DISABLED);
+  } else {
+    trashElem.classList.add(CONSTANTS.CLASS_NAMES.ICON_DISABLED);
+  }
 }
 
-export { addAbsenceEntry, deleteAbsenceEntry, markActiveEntry };
+export {
+  addAbsenceEntry,
+  deleteAbsenceEntry,
+  setTrashActive,
+  updateEntrySelectionOnPage,
+};

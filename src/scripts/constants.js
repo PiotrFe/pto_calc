@@ -1,19 +1,25 @@
 export const CONSTANTS = {
   CLASS_NAMES: {
-    ABSENCE_ENTRY: "absence-entry",
     ABSENCE_CONTROL: "absence-control",
-
+    ABSENCE_DATE_FROM: "absence-from",
+    ABSENCE_DATE_TO: "absence-to",
+    ABSENCE_ENTRY: "absence-entry",
     ABSENCE_ICON: "absence-entry-icon",
     ABSENCE_LIST: "absence-list",
+    CLICKABLE: "clickable",
+    CONTROL_SELECTED: "control-selected",
+    ICON_DISABLED: "icon-disabled",
+    PAGE_MAIN: "page-main",
+    SELECTABLE: "selectable",
   },
   IDS: {
     ABSENCE_DATE_FROM: "absence-from",
     ABSENCE_DATE_TO: "absence-to",
     ABSENCE_PERCENT: "absence-percent",
     ABSENCE_REASON: "absence-reason",
+    ABSENCE_ENTRY_LIST: "absence-entries",
     BTN_ADD_ABSENCE: "btn-add-absence-entry",
     BTN_DELETE_ABSENCE: "btn-delete-absence-entry",
-    ABSENCE_ENTRY_LIST: "absence-entries",
   },
   ABSENCE_REASONS: [
     "Sickness",
