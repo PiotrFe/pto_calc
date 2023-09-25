@@ -52,6 +52,7 @@ html {
   height: 55px;
   display: flex;
   align-items: center;
+  user-select: none;
 }
 
 .absence-header-entry,
@@ -112,4 +113,5 @@ html {
 }
 
 .clickable:hover {
+  cursor: pointer;
 }

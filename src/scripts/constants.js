@@ -11,6 +11,10 @@ export const CONSTANTS = {
     ICON_DISABLED: "icon-disabled",
     PAGE_MAIN: "page-main",
     SELECTABLE: "selectable",
+    SORTED: "sorted",
+    SORTED_ASC: "sorted-asc",
+    SORTED_DESC: "sorted-desc",
+    SORT_ICON: "sort-icon",
   },
   IDS: {
     ABSENCE_DATE_FROM: "absence-from",
@@ -18,6 +22,7 @@ export const CONSTANTS = {
     ABSENCE_PERCENT: "absence-percent",
     ABSENCE_REASON: "absence-reason",
     ABSENCE_ENTRY_LIST: "absence-entries",
+    ABSENCE_HEADER: "absence-header",
     BTN_ADD_ABSENCE: "btn-add-absence-entry",
     BTN_DELETE_ABSENCE: "btn-delete-absence-entry",
   },

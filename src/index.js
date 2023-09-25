@@ -4,6 +4,8 @@ import {
   updateEntrySelectionOnPage,
 } from "./scripts/comp-functions.js";
 
+import { updateHeaderSort } from "./scripts/header-functions.js";
+
 import { CONSTANTS } from "./scripts/constants.js";
 
 init();
@@ -11,13 +13,15 @@ init();
 function init() {
   const addBtn = document.getElementById(CONSTANTS.IDS.BTN_ADD_ABSENCE);
   const deleteBtn = document.getElementById(CONSTANTS.IDS.BTN_DELETE_ABSENCE);
-  const pageELem = document.querySelector(
+  const pageElem = document.querySelector(
     `.${CONSTANTS.CLASS_NAMES.PAGE_MAIN}`
   );
+  const headerElem = document.getElementById(CONSTANTS.IDS.ABSENCE_HEADER);
 
   addBtn.addEventListener("click", addAbsenceEntry);
   deleteBtn.addEventListener("click", deleteAbsenceEntry);
-  pageELem.addEventListener("click", updateEntrySelectionOnPage);
+  pageElem.addEventListener("click", updateEntrySelectionOnPage);
+  headerElem.addEventListener("click", updateHeaderSort);
 
   addAbsenceEntry();
 }
