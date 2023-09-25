@@ -23,18 +23,18 @@
   </head>
   <body>
     <div class="page-main">
-      <div class="page-content">
-        <div class="absences">
-          <div class="absence-entry mb-3">
-            <div class="absence-control">
+      <div class="container-fluid page-content">
+        <div id="absence-list" class="absence-list">
+          <div class="row absence-entry mb-3">
+            <div class="col-3 absence-control">
               <label for="absence-from-1" class="form-label">From</label>
               <input type="date" class="form-control" id="absence-from-1" />
             </div>
-            <div class="absence-control">
+            <div class="col-3 absence-control">
               <label for="absence-to-1" class="form-label">To</label>
               <input type="date" class="form-control" id="absence-to-1" />
             </div>
-            <div class="absence-control absence-control--small">
+            <div class="col-2 absence-control absence-control--small">
               <label for="absence-percent-1" class="form-label">Percent</label>
               <input
                 type="number"
@@ -45,7 +45,7 @@
                 id="absence-percent-1"
               />
             </div>
-            <div class="absence-control">
+            <div class="col absence-control">
               <label for="absence-reason" class="form-label">Reason</label>
               <select class="form-control" id="absence-reason">
                 <option>Sickness</option>
@@ -55,11 +55,13 @@
                 <option>Maternity</option>
               </select>
             </div>
-            <div id="btn-add-absence-entry-1" class="absence-entry-icon">
-              <i class="bi bi-plus-lg"></i>
-            </div>
-            <div id="btn-delete-absence-entry-1" class="absence-entry-icon">
-              <i class="bi bi-trash"></i>
+            <div class="col-1 absence-control absence-control-btns">
+              <div id="btn-add-absence-entry-1" class="absence-entry-icon">
+                <i class="bi bi-plus-lg"></i>
+              </div>
+              <div id="btn-delete-absence-entry-1" class="absence-entry-icon">
+                <i class="bi bi-trash"></i>
+              </div>
             </div>
           </div>
         </div>

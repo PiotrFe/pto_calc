@@ -17,27 +17,18 @@ html {
   justify-content: center;
 }
 
-.header-main {
-  font-size: 20px;
-  color: red;
-}
-
-.absences {
+.absence-list {
   width: 80%;
   margin-top: 5rem;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   min-height: 100px;
 }
 
-.absence-control:not(:first-child) {
-  margin-left: 15px;
-}
-
-.absence-control {
+/* .absence-control {
   width: 180px;
-}
+} */
 
 .absence-control--small {
   width: 100px;
@@ -51,10 +42,21 @@ html {
 .absence-entry-icon {
   display: flex;
   align-items: end;
-  margin-left: 10px;
+}
+
+.absence-entry-icon > i {
   margin-bottom: 8px;
 }
 
-.absence-entry-icon:hover {
+.absence-entry-icon > i:hover {
   cursor: pointer;
+}
+
+.absence-control-btns {
+  display: flex;
+  align-items: end;
+}
+
+.absence-entry-icon:not(:first-child) {
+  margin-left: 10px;
 }
