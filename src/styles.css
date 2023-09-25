@@ -1,0 +1,60 @@
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.page-main {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.page-content {
+  display: flex;
+  justify-content: center;
+}
+
+.header-main {
+  font-size: 20px;
+  color: red;
+}
+
+.absences {
+  width: 80%;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 100px;
+}
+
+.absence-control:not(:first-child) {
+  margin-left: 15px;
+}
+
+.absence-control {
+  width: 180px;
+}
+
+.absence-control--small {
+  width: 100px;
+}
+
+.absence-entry {
+  width: 100%;
+  display: flex;
+}
+
+.absence-entry-icon {
+  display: flex;
+  align-items: end;
+  margin-left: 10px;
+  margin-bottom: 8px;
+}
+
+.absence-entry-icon:hover {
+  cursor: pointer;
+}
