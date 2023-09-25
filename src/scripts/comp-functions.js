@@ -1,17 +1,18 @@
 import { CONSTANTS } from "./constants.js";
+import { parseTsFromId } from "./utils.js";
 
 function addAbsenceEntry() {
   const elemCount =
     document.getElementsByClassName(CONSTANTS.CLASS_NAMES.ABSENCE_ENTRY)
       .length || 0;
-  const elemIdx = elemCount + 1; // change this - may result in duplicated ids
+  const elemIdx = Date.now();
 
   const absenceEntry = document.createElement("div");
-  absenceEntry.classList.add("mb3-3");
+  absenceEntry.classList.add("mb-3");
   absenceEntry.classList.add("row");
   absenceEntry.classList.add(CONSTANTS.CLASS_NAMES.ABSENCE_ENTRY);
 
-  const absenceList = document.getElementById(CONSTANTS.IDS.ABSENCE_LIST);
+  const absenceList = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRY_LIST);
 
   for (let control of [
     { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
@@ -43,20 +44,25 @@ function deleteAbsenceEntry() {
 
 function createAbsenceControl({ type, inputType, idx, ...otherProps }) {
   const divElem = document.createElement("div");
+  const width = inputType === "date" ? 3 : inputType === "number" ? 2 : null;
+  const widthClass = width ? `col-${width}` : "col";
 
-  divElem.classList.add("col-3");
+  divElem.classList.add(widthClass);
   divElem.classList.add(CONSTANTS.CLASS_NAMES.ABSENCE_CONTROL);
 
-  const { labelElem, inputElem } = createControl({
+  const { inputElem } = createControl({
     inputType,
     id: `${type}-${idx}`,
+    type,
     classListArr: ["form-control"],
-    labelClassListArr: ["form-label"],
-    labelText: "",
     ...otherProps,
   });
 
-  divElem.append(labelElem);
+  if (inputType === "select") {
+    appendAbsenceOptions(inputElem);
+    inputElem.value = CONSTANTS.ABSENCE_REASONS?.[0] || "";
+  }
+
   divElem.append(inputElem);
 
   return divElem;
@@ -66,20 +72,17 @@ function createControl({
   id,
   classListArr = [],
   inputType = "text",
-  labelClassListArr = [],
-  labelText = "",
+  type,
   ...otherProps
 }) {
-  const labelElem = document.createElement("label");
-  let inputElem = document.createElement("input");
+  const elemType = inputType !== "select" ? "input" : "select";
+  let inputElem = document.createElement(elemType);
 
-  inputElem.type = inputType;
+  if (elemType !== "select") {
+    inputElem.type = inputType;
+  }
+
   inputElem.id = id;
-
-  console.log({
-    inputType,
-    otherProps,
-  });
 
   for (let [key, val] of Object.entries(otherProps)) {
     inputElem[key] = val;
@@ -89,14 +92,63 @@ function createControl({
     inputElem.classList.add(cls);
   }
 
-  for (let cls of labelClassListArr) {
-    labelElem.classList.add(cls);
+  if (inputType === "date") {
+    appendDateListener({ elem: inputElem, type });
   }
 
-  labelElem.for = id;
-  labelElem.textContent = labelText;
-
-  return { labelElem, inputElem };
+  return { inputElem };
 }
 
-export { addAbsenceEntry, deleteAbsenceEntry };
+function appendAbsenceOptions(selectElem) {
+  if (!selectElem) {
+    return;
+  }
+
+  for (let absence of CONSTANTS.ABSENCE_REASONS) {
+    const optionElem = document.createElement("option");
+    optionElem.value = absence;
+    optionElem.textContent = absence;
+
+    selectElem.append(optionElem);
+  }
+}
+
+function appendDateListener({ elem, type }) {
+  const prop =
+    type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
+      ? "min"
+      : type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
+      ? "max"
+      : null;
+
+  if (!prop) {
+    return;
+  }
+
+  const siblingName =
+    type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
+      ? CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
+      : type === CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
+      ? CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
+      : null;
+
+  const siblingIdTs = parseTsFromId(elem.id);
+  const siblingId = `${siblingName}-${siblingIdTs}`;
+
+  elem.addEventListener("change", (e) => {
+    const siblingDate = document.getElementById(siblingId);
+    siblingDate.min = null;
+    siblingDate.max = null;
+    siblingDate[prop] = e.target.value;
+  });
+}
+
+function markActiveEntry(e) {
+  console.log(e.target);
+}
+
+function onFromDateChange(e) {
+  console.log(e.target.value);
+}
+
+export { addAbsenceEntry, deleteAbsenceEntry, markActiveEntry };

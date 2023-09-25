@@ -1,7 +1,10 @@
 import {
   addAbsenceEntry,
   deleteAbsenceEntry,
+  markActiveEntry,
 } from "./scripts/comp-functions.js";
+
+import { CONSTANTS } from "./scripts/constants.js";
 
 init();
 
@@ -11,4 +14,6 @@ function init() {
 
   addBtn.addEventListener("click", addAbsenceEntry);
   deleteBtn.addEventListener("click", deleteAbsenceEntry);
+
+  addAbsenceEntry();
 }
