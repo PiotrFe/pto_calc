@@ -7,14 +7,14 @@ import {
 } from "./listeners.js";
 import { makeSelectable } from "./utils.js";
 
-function addAbsenceEntry() {
+function addListEntry({ entryType }) {
   const absenceEntry = document.createElement("div");
   const elemIdx = Date.now();
   const absenceList = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRY_LIST);
 
   absenceEntry.classList.add("mb-3");
   absenceEntry.classList.add("row");
-  absenceEntry.classList.add(CONSTANTS.CLASS_NAMES.ABSENCE_ENTRY);
+  absenceEntry.classList.add(CONSTANTS.CLASS_NAMES.LIST_ENTRY);
 
   for (let control of [
     { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
@@ -43,6 +43,14 @@ function addAbsenceEntry() {
   absenceList.append(absenceEntry);
 }
 
+function addAbsenceEntry() {
+  addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.ABSENCE });
+}
+
+function addEmploymentEntry() {
+  addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.EMPLOYMENT });
+}
+
 function deleteAbsenceEntry() {
   const trashElem = document.querySelector(
     `#${CONSTANTS.IDS.BTN_DELETE_ABSENCE}`
@@ -65,12 +73,12 @@ function deleteAbsenceEntry() {
 
   clearControlListeners(activeEntry);
 
-  const prevSibling = activeEntry.nextElementSibling;
+  const nextSibling = activeEntry.nextElementSibling;
 
   activeEntry.remove();
 
-  if (prevSibling) {
-    setItemActive(prevSibling);
+  if (nextSibling) {
+    setItemActive(nextSibling);
   } else {
     setTrashActive(false);
   }
@@ -82,7 +90,7 @@ function createAbsenceControl({ type, inputType, idx, ...otherProps }) {
   const widthClass = width ? `col-${width}` : "col";
 
   divElem.classList.add(widthClass);
-  divElem.classList.add(CONSTANTS.CLASS_NAMES.ABSENCE_CONTROL);
+  divElem.classList.add(CONSTANTS.CLASS_NAMES.LIST_ENTRY_CONTROL);
 
   const { inputElem } = createControl({
     inputType,
@@ -155,6 +163,8 @@ function updateEntrySelectionOnPage(e) {
       e.classList.contains(CONSTANTS.CLASS_NAMES.SELECTABLE)
   );
 
+  console.log({ skipClear, elemsUnderCursor, x: e.x, y: e.y });
+
   if (skipClear) {
     return;
   }
@@ -201,7 +211,9 @@ function setTrashActive(active = false) {
 }
 
 export {
+  addListEntry,
   addAbsenceEntry,
+  addEmploymentEntry,
   deleteAbsenceEntry,
   setTrashActive,
   updateEntrySelectionOnPage,

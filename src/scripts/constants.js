@@ -1,13 +1,11 @@
 export const CONSTANTS = {
   CLASS_NAMES: {
-    ABSENCE_CONTROL: "absence-control",
-    ABSENCE_DATE_FROM: "absence-from",
-    ABSENCE_DATE_TO: "absence-to",
-    ABSENCE_ENTRY: "absence-entry",
-    ABSENCE_ICON: "absence-entry-icon",
-    ABSENCE_LIST: "absence-list",
-    ABSENCE_PERCENT: "absence-percent",
-    ABSENCE_REASON: "absence-reason",
+    LIST_ENTRY_CONTROL: "list-entry-control",
+    LIST_ENTRY_DATE_FROM: "list-entry-date-from",
+    LIST_ENTRY_DATE_TO: "list-entry-date-to",
+    LIST_ENTRY: "list-entry",
+    LIST_ENTRY_PERCENT: "list-entry-percent",
+    LIST_ENTRY_REASON: "list-entry-reason",
     CLICKABLE: "clickable",
     CONTROL_SELECTED: "control-selected",
     ICON_DISABLED: "icon-disabled",
@@ -28,6 +26,8 @@ export const CONSTANTS = {
     ABSENCE_HEADER: "absence-header",
     BTN_ADD_ABSENCE: "btn-add-absence-entry",
     BTN_DELETE_ABSENCE: "btn-delete-absence-entry",
+    EMPLOYMENT_HEADER: "employment-header",
+    EMPLOYMENT_LIST: "employment-list",
   },
   ABSENCE_REASONS: [
     "Sickness",
@@ -37,9 +37,9 @@ export const CONSTANTS = {
     "Maternity",
   ],
   CONTROL_TYPES: {
-    ABSENCE_DATE_FROM: "absence-from",
-    ABSENCE_DATE_TO: "absence-to",
-    ABSENCE_PERCENT: "absence-parcent",
+    LIST_ENTRY_DATE_FROM: "list-entry-date-from",
+    LIST_ENTRY_DATE_TO: "list-entry-date-to",
+    LIST_ENTRY_PERCENT: "list-entry-percent",
   },
   SORT_STATUS: {
     ASC: "asc",
@@ -51,5 +51,9 @@ export const CONSTANTS = {
     TO: "TO",
     PERCENT: "PERCENT",
     REASON: "REASON",
+  },
+  ENTRY_TYPES: {
+    ABSENCE: "ABSENCE",
+    EMPLOYMENT: "EMPLOYMENT",
   },
 };

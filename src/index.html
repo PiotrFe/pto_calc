@@ -24,40 +24,70 @@
   <body>
     <div class="page-main">
       <div class="container-fluid page-content">
-        <div id="absence-list" class="absence-list">
-          <h1 class="display-4 section-title">Absences</h1>
-          <div id="absence-header" class="absence-header">
-            <div class="row absence-header-entry mb-3">
-              <div class="col-3">
-                <label class="form-label clickable sortable">From</label>
-              </div>
-              <div class="col-3">
-                <label class="form-label clickable sortable">To</label>
-              </div>
-              <div class="col-2 absence-control--small">
-                <label class="form-label clickable sortable">Percent</label>
-              </div>
-              <div class="col absence-control">
-                <label class="form-label clickable sortable">Reason</label>
-              </div>
-              <div class="col-1 absence-control absence-control-btns">
-                <div
-                  id="btn-add-absence-entry"
-                  class="absence-entry-icon clickable"
-                >
-                  <i class="bi bi-plus-lg"></i>
+        <div class="entry-lists">
+          <div id="employment-list" class="entry-list">
+            <h1 class="display-4 section-title">Employment</h1>
+            <div id="employment-header" class="entry-list-header">
+              <div class="row header-entry mb-3">
+                <div class="col-3">
+                  <label class="form-label clickable sortable">From</label>
                 </div>
-                <div
-                  id="btn-delete-absence-entry"
-                  class="absence-entry-icon icon-disabled clickable"
-                >
-                  <i class="bi bi-trash"></i>
+                <div class="col-3">
+                  <label class="form-label clickable sortable">To</label>
+                </div>
+                <div class="col-2 list-entry-control--small">
+                  <label class="form-label clickable sortable">Percent</label>
                 </div>
               </div>
             </div>
+            <div id="employment-entries" class="list-entries"></div>
           </div>
-          <div id="absence-entries" class="absence-entries"></div>
+          <div id="absence-list" class="entry-list">
+            <h1 class="display-4 section-title">Absences</h1>
+            <div id="absence-header" class="entry-list-header">
+              <div class="row header-entry mb-3">
+                <div class="col-3">
+                  <label class="form-label clickable sortable">From</label>
+                </div>
+                <div class="col-3">
+                  <label class="form-label clickable sortable">To</label>
+                </div>
+                <div class="col-2 list-entry-control--small">
+                  <label class="form-label clickable sortable">Percent</label>
+                </div>
+                <div class="col list-entry-control">
+                  <label class="form-label clickable sortable">Reason</label>
+                </div>
+                <div class="col-1 list-entry-control list-entry-control-btns">
+                  <div
+                    id="btn-add-absence-entry"
+                    class="list-entry-icon clickable"
+                  >
+                    <i class="bi bi-plus-lg"></i>
+                  </div>
+                  <div
+                    id="btn-delete-absence-entry"
+                    class="list-entry-icon icon-disabled clickable"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="absence-entries" class="list-entries"></div>
+          </div>
         </div>
+      </div>
+    </div>
+    <div class="control-btns">
+      <div id="btn-add-employment-entry" class="list-entry-icon clickable">
+        <i class="bi bi-plus-lg"></i>
+      </div>
+      <div
+        id="btn-delete-employment-entry"
+        class="list-entry-icon icon-disabled clickable"
+      >
+        <i class="bi bi-trash"></i>
       </div>
     </div>
   </body>

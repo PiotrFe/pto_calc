@@ -20,10 +20,10 @@ function clearControlListeners(elem) {
   }
 
   const dateFrom = elem.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.ABSENCE_DATE_FROM}`
+    `.${CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_FROM}`
   );
   const dateTo = elem.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.ABSENCE_DATE_TO}`
+    `.${CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_TO}`
   );
 
   removeDateListener(dateFrom);
@@ -47,10 +47,10 @@ function removeActiveEntryListener(elem) {
 function dateChangeListener(e) {
   const elem = e.target;
   const prop = elem.classList.contains(
-    CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
+    CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_FROM
   )
     ? "min"
-    : elem.classList.contains(CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO)
+    : elem.classList.contains(CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_TO)
     ? "max"
     : null;
 
@@ -59,11 +59,11 @@ function dateChangeListener(e) {
   }
 
   const siblingName = elem.classList.contains(
-    CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
+    CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_FROM
   )
-    ? CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO
-    : elem.classList.contains(CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_TO)
-    ? CONSTANTS.CONTROL_TYPES.ABSENCE_DATE_FROM
+    ? CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_TO
+    : elem.classList.contains(CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_TO)
+    ? CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_FROM
     : null;
   const siblingIdTs = parseTsFromId(elem.id);
   const siblingId = `${siblingName}-${siblingIdTs}`;

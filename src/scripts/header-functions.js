@@ -96,7 +96,7 @@ function updateSortIconOnParent({ elem, shouldAdd = false, dir = "asc" }) {
 
 function sortData({ byField, dir }) {
   const entryList = document.getElementsByClassName(
-    CONSTANTS.CLASS_NAMES.ABSENCE_ENTRY
+    CONSTANTS.CLASS_NAMES.LIST_ENTRY
   );
 
   if (
@@ -113,13 +113,13 @@ function sortData({ byField, dir }) {
 
   switch (byField) {
     case CONSTANTS.SORT_FIELDS.FROM:
-      sortByElem = CONSTANTS.CLASS_NAMES.ABSENCE_DATE_FROM;
+      sortByElem = CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_FROM;
       break;
     case CONSTANTS.SORT_FIELDS.TO:
-      sortByElem = CONSTANTS.CLASS_NAMES.ABSENCE_DATE_TO;
+      sortByElem = CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_TO;
       break;
     case CONSTANTS.SORT_FIELDS.PERCENT:
-      sortByElem = CONSTANTS.CLASS_NAMES.ABSENCE_PERCENT;
+      sortByElem = CONSTANTS.CLASS_NAMES.LIST_ENTRY_PERCENT;
       break;
     case CONSTANTS.SORT_FIELDS.REASON:
       sortByElem = CONSTANTS.CLASS_NAMES.REASON;

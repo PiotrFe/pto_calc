@@ -1,5 +1,7 @@
 import {
   addAbsenceEntry,
+  addEmploymentEntry,
+  addListEntry,
   deleteAbsenceEntry,
   updateEntrySelectionOnPage,
 } from "./scripts/comp-functions.js";
@@ -23,5 +25,5 @@ function init() {
   pageElem.addEventListener("click", updateEntrySelectionOnPage);
   headerElem.addEventListener("click", updateHeaderSort);
 
-  addAbsenceEntry();
+  addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.ABSENCE });
 }
