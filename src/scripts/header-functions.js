@@ -162,7 +162,7 @@ function sortData({ byField, dir }) {
       : parsedValB - parsedValA;
   });
 
-  const parentElem = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRY_LIST);
+  const parentElem = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRIES);
   elemArr.forEach((e) => parentElem.appendChild(e));
 }
 

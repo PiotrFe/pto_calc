@@ -31,6 +31,19 @@ html {
  List entry section 
 *************************/
 
+.list-entries {
+  min-height: 200px;
+}
+
+.list-entries:hover {
+  cursor: pointer;
+  background-color: pink;
+}
+
+.list-active {
+  background-color: pink;
+}
+
 .entry-list-header {
   margin-top: 5rem;
   display: flex;
@@ -103,7 +116,7 @@ html {
  Control buttons
 *************************/
 
-.control.btns {
+.control-btns {
   display: flex;
   position: absolute;
   right: 25px;

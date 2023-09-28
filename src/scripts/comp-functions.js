@@ -2,28 +2,45 @@ import { CONSTANTS } from "./constants.js";
 import {
   addActiveEntryListener,
   addDateListener,
+  addSubmissionListener,
   clearControlListeners,
   setItemActive,
 } from "./listeners.js";
 import { makeSelectable } from "./utils.js";
 
+const baseEntryControls = [
+  { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
+  { type: CONSTANTS.IDS.ABSENCE_DATE_TO, inputType: "date" },
+  { type: CONSTANTS.IDS.ABSENCE_PERCENT, inputType: "number" },
+];
+
+const absenceEntryControls = [
+  { type: CONSTANTS.IDS.ABSENCE_REASON, inputType: "select" },
+];
+
 function addListEntry({ entryType }) {
-  const absenceEntry = document.createElement("div");
+  const newEntry = document.createElement("form");
   const elemIdx = Date.now();
-  const absenceList = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRY_LIST);
+  const entryList = document.getElementById(
+    entryType === CONSTANTS.ENTRY_TYPES.ABSENCE
+      ? CONSTANTS.IDS.ABSENCE_ENTRIES
+      : CONSTANTS.IDS.EMPLOYMENT_ENTRIES
+  );
 
-  absenceEntry.classList.add("mb-3");
-  absenceEntry.classList.add("row");
-  absenceEntry.classList.add(CONSTANTS.CLASS_NAMES.LIST_ENTRY);
+  newEntry.classList.add("mb-3");
+  newEntry.classList.add("row");
+  newEntry.classList.add(CONSTANTS.CLASS_NAMES.LIST_ENTRY);
 
-  for (let control of [
-    { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
-    { type: CONSTANTS.IDS.ABSENCE_DATE_TO, inputType: "date" },
-    { type: CONSTANTS.IDS.ABSENCE_PERCENT, inputType: "number" },
-    { type: CONSTANTS.IDS.ABSENCE_REASON, inputType: "select" },
-  ]) {
+  const entryControls = [
+    ...baseEntryControls,
+    ...(entryType === CONSTANTS.ENTRY_TYPES.ABSENCE
+      ? absenceEntryControls
+      : []),
+  ];
+
+  for (let control of entryControls) {
     const { type, inputType } = control;
-    const absenceControl = createAbsenceControl({
+    const absenceControl = createEntryControl({
       type,
       inputType,
       idx: elemIdx,
@@ -34,13 +51,14 @@ function addListEntry({ entryType }) {
       }),
     });
 
-    absenceEntry.append(absenceControl);
+    newEntry.append(absenceControl);
   }
 
-  addActiveEntryListener(absenceEntry);
-  makeSelectable(absenceEntry);
+  addActiveEntryListener(newEntry);
+  addSubmissionListener(newEntry);
+  makeSelectable(newEntry);
 
-  absenceList.append(absenceEntry);
+  entryList.append(newEntry);
 }
 
 function addAbsenceEntry() {
@@ -51,9 +69,31 @@ function addEmploymentEntry() {
   addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.EMPLOYMENT });
 }
 
-function deleteAbsenceEntry() {
+function addListEntryOnClick() {
+  const activeList = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`
+  );
+
+  const activeEntry = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
+  );
+
+  if (!activeList && !activeEntry) {
+    return;
+  }
+
+  const listToUpdate = activeList || activeEntry.parentElement;
+
+  if (listToUpdate.id === CONSTANTS.IDS.ABSENCE_ENTRIES) {
+    addAbsenceEntry();
+  } else if (listToUpdate.id === CONSTANTS.IDS.EMPLOYMENT_ENTRIES) {
+    addEmploymentEntry();
+  }
+}
+
+function deleteActiveEntry() {
   const trashElem = document.querySelector(
-    `#${CONSTANTS.IDS.BTN_DELETE_ABSENCE}`
+    `#${CONSTANTS.IDS.BTN_DELETE_LIST_ENTRY}`
   );
   const isDisabled = trashElem.classList.contains(
     CONSTANTS.CLASS_NAMES.ICON_DISABLED
@@ -84,7 +124,7 @@ function deleteAbsenceEntry() {
   }
 }
 
-function createAbsenceControl({ type, inputType, idx, ...otherProps }) {
+function createEntryControl({ type, inputType, idx, ...otherProps }) {
   const divElem = document.createElement("div");
   const width = inputType === "date" ? 3 : inputType === "number" ? 2 : null;
   const widthClass = width ? `col-${width}` : "col";
@@ -134,6 +174,8 @@ function createControl({
     inputElem.classList.add(cls);
   }
 
+  inputElem.setAttribute("required", true);
+
   if (inputType === "date") {
     addDateListener(inputElem);
   }
@@ -163,8 +205,6 @@ function updateEntrySelectionOnPage(e) {
       e.classList.contains(CONSTANTS.CLASS_NAMES.SELECTABLE)
   );
 
-  console.log({ skipClear, elemsUnderCursor, x: e.x, y: e.y });
-
   if (skipClear) {
     return;
   }
@@ -186,7 +226,7 @@ function clearEntrySelection() {
 
 function setTrashActive(active = false) {
   const trashElem = document.querySelector(
-    `#${CONSTANTS.IDS.BTN_DELETE_ABSENCE}`
+    `#${CONSTANTS.IDS.BTN_DELETE_LIST_ENTRY}`
   );
 
   if (!trashElem) {
@@ -210,11 +250,52 @@ function setTrashActive(active = false) {
   }
 }
 
+function clearActiveListSelection() {
+  const activeList = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`
+  );
+
+  if (activeList) {
+    activeList.classList.remove(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
+  }
+}
+
+function toggleActiveListOnClick(e) {
+  const listElem = e.target;
+  const isList = listElem.classList.contains(
+    CONSTANTS.CLASS_NAMES.LIST_ENTRIES
+  );
+
+  if (!isList) {
+    return;
+  }
+
+  const isActive = listElem.classList.contains(
+    CONSTANTS.CLASS_NAMES.LIST_ACTIVE
+  );
+  const activeList = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`
+  );
+
+  if (activeList) {
+    activeList.classList.remove(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
+  }
+
+  if (isActive) {
+    listElem.classList.remove(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
+  } else {
+    listElem.classList.add(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
+  }
+}
+
 export {
   addListEntry,
+  addListEntryOnClick,
   addAbsenceEntry,
   addEmploymentEntry,
-  deleteAbsenceEntry,
+  clearActiveListSelection,
+  deleteActiveEntry,
   setTrashActive,
+  toggleActiveListOnClick,
   updateEntrySelectionOnPage,
 };

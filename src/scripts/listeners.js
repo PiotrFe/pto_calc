@@ -1,9 +1,8 @@
 import { parseTsFromId } from "./utils.js";
 import { CONSTANTS } from "./constants.js";
-import { setTrashActive } from "./comp-functions.js";
+import { clearActiveListSelection, setTrashActive } from "./comp-functions.js";
 
 // ADDING
-
 function addDateListener(elem) {
   elem.addEventListener("change", dateChangeListener);
 }
@@ -12,8 +11,12 @@ function addActiveEntryListener(elem) {
   elem.addEventListener("click", activeEntryListener);
 }
 
-// REMOVING
+function addSubmissionListener(elem) {
+  console.log({ elem });
+  elem.addEventListener("submit", submissionListener);
+}
 
+// REMOVING
 function clearControlListeners(elem) {
   if (!elem) {
     return;
@@ -29,6 +32,7 @@ function clearControlListeners(elem) {
   removeDateListener(dateFrom);
   removeDateListener(dateTo);
   removeActiveEntryListener(elem);
+  removeSubmissionListener(elem);
 }
 
 function removeDateListener(elem) {
@@ -40,6 +44,10 @@ function removeDateListener(elem) {
 
 function removeActiveEntryListener(elem) {
   elem.removeEventListener("click", activeEntryListener);
+}
+
+function removeSubmissionListener(elem) {
+  elem.removeSubmissionListener("submit", submissionListener);
 }
 
 // LISTENERS
@@ -92,22 +100,30 @@ function activeEntryListener(e) {
   }
 }
 
+function submissionListener(e) {
+  console.log("Running");
+  e.preventDefault();
+}
+
 function setItemActive(elem) {
   const currSelectedElem = document.querySelector(
     `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
   );
 
   if (currSelectedElem) {
+    currSelectedElem.submit && currSelectedElem.submit();
     currSelectedElem.classList.remove(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
   }
 
   elem.classList.add(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
   setTrashActive(true);
+  clearActiveListSelection();
 }
 
 export {
   addDateListener,
   addActiveEntryListener,
+  addSubmissionListener,
   clearControlListeners,
   removeActiveEntryListener,
   removeDateListener,

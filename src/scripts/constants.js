@@ -1,5 +1,8 @@
 export const CONSTANTS = {
   CLASS_NAMES: {
+    CONTROL_SELECTED: "control-selected",
+    LIST_ACTIVE: "list-active",
+    LIST_ENTRIES: "list-entries",
     LIST_ENTRY_CONTROL: "list-entry-control",
     LIST_ENTRY_DATE_FROM: "list-entry-date-from",
     LIST_ENTRY_DATE_TO: "list-entry-date-to",
@@ -22,12 +25,14 @@ export const CONSTANTS = {
     ABSENCE_DATE_TO: "absence-to",
     ABSENCE_PERCENT: "absence-percent",
     ABSENCE_REASON: "absence-reason",
-    ABSENCE_ENTRY_LIST: "absence-entries",
+    ABSENCE_LIST: "absence-list",
+    ABSENCE_ENTRIES: "absence-entries",
     ABSENCE_HEADER: "absence-header",
-    BTN_ADD_ABSENCE: "btn-add-absence-entry",
-    BTN_DELETE_ABSENCE: "btn-delete-absence-entry",
-    EMPLOYMENT_HEADER: "employment-header",
+    BTN_ADD_LIST_ENTRY: "btn-add-list-entry",
+    BTN_DELETE_LIST_ENTRY: "btn-delete-list-entry",
     EMPLOYMENT_LIST: "employment-list",
+    EMPLOYMENT_HEADER: "employment-header",
+    EMPLOYMENT_ENTRIES: "employment-entries",
   },
   ABSENCE_REASONS: [
     "Sickness",
