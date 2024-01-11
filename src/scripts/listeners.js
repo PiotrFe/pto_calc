@@ -1,6 +1,10 @@
 import { getListByEntryName, parseTsFromId } from "./utils.js";
 import { CONSTANTS } from "./constants.js";
-import { clearActiveListSelection, setTrashActive } from "./comp-functions.js";
+import {
+  clearActiveListSelection,
+  getListEntry,
+  setTrashActive,
+} from "./comp-functions.js";
 import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
 
 // ADDING
@@ -14,6 +18,10 @@ function addActiveEntryListener(elem) {
 
 function addSubmissionListener(elem) {
   elem.addEventListener("submit", submissionListener);
+}
+
+function addStaticDivClickListener(elem) {
+  elem.addEventListener("click", staticDivClickListener);
 }
 
 // REMOVING
@@ -33,6 +41,7 @@ function clearControlListeners(elem) {
   removeDateListener(dateTo);
   removeActiveEntryListener(elem);
   removeSubmissionListener(elem);
+  removeStaticDivClickListener(elem);
 }
 
 function removeDateListener(elem) {
@@ -47,7 +56,11 @@ function removeActiveEntryListener(elem) {
 }
 
 function removeSubmissionListener(elem) {
-  elem.removeSubmissionListener("submit", submissionListener);
+  elem.removeEventListener("submit", submissionListener);
+}
+
+function removeStaticDivClickListener(elem) {
+  elem.removeEventListener("click", staticDivClickListener);
 }
 
 // LISTENERS
@@ -102,8 +115,7 @@ function activeEntryListener(e) {
 
 function submissionListener(e) {
   e.preventDefault();
-  const elem = e.target;
-  convertEntryToDiv(elem);
+  convertEntryToDiv(e.target);
 }
 
 function setItemActive(elem) {
@@ -120,16 +132,21 @@ function setItemActive(elem) {
   clearActiveListSelection();
 }
 
-function convertEntryToDiv(elem) {
-  if (!elem) {
+function staticDivClickListener(e) {
+  convertDivToEntry(e.target);
+}
+
+// HELPERS
+
+function convertEntryToDiv(entryElem) {
+  if (!entryElem) {
     return;
   }
-  const { entryType } = elem.dataset;
-
+  const entryType = entryElem.dataset.entrytype;
   const entryList = getListByEntryName(entryType);
-
   const divElem = document.createElement("div");
-  const childDivArr = Array.from(elem.children).map((divElem) => {
+
+  const childDivArr = Array.from(entryElem.children).map((divElem) => {
     const inputElem = divElem.children.item(0);
     const inputType = inputElem.type;
     const childDiv = document.createElement("div");
@@ -144,9 +161,28 @@ function convertEntryToDiv(elem) {
     divElem.append(childDiv);
   }
 
-  addListEntryClassNames(divElem);
+  divElem.dataset.entrytype = entryType;
 
-  entryList.replaceChild(divElem, elem);
+  addListEntryClassNames(divElem);
+  addStaticDivClickListener(divElem);
+
+  clearControlListeners(entryElem);
+
+  entryList.replaceChild(divElem, entryElem);
+}
+
+function convertDivToEntry(elem) {
+  const childClicked = elem.classList.contains(
+    CONSTANTS.CLASS_NAMES.LIST_ENTRY_CONTROL_STATIC
+  );
+  const divElem = childClicked ? elem.parentElement : elen;
+  const entryType = divElem.dataset.entrytype;
+
+  const entryElem = getListEntry({ entryType });
+  const entryList = getListByEntryName(entryType);
+
+  clearControlListeners(divElem);
+  entryList.replaceChild(entryElem, divElem);
 }
 
 export {

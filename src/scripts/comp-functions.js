@@ -7,7 +7,7 @@ import {
   setItemActive,
 } from "./listeners.js";
 import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
-import { makeSelectable } from "./utils.js";
+import { getListByEntryName, makeSelectable } from "./utils.js";
 
 const baseEntryControls = [
   { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
@@ -20,17 +20,19 @@ const absenceEntryControls = [
 ];
 
 function addListEntry({ entryType }) {
+  const newEntry = getListEntry({ entryType });
+
+  const entryList = getListByEntryName(entryType);
+
+  entryList.append(newEntry);
+}
+
+function getListEntry({ entryType, fieldValues = [] }) {
   const newEntry = document.createElement("form");
   const elemIdx = Date.now();
 
   newEntry.method = "POST";
-  newEntry.dataset.entryType = entryType;
-
-  const entryList = document.getElementById(
-    entryType === CONSTANTS.ENTRY_TYPES.ABSENCE
-      ? CONSTANTS.IDS.ABSENCE_ENTRIES
-      : CONSTANTS.IDS.EMPLOYMENT_ENTRIES
-  );
+  newEntry.dataset.entrytype = entryType;
 
   addListEntryClassNames(newEntry);
 
@@ -41,7 +43,9 @@ function addListEntry({ entryType }) {
       : []),
   ];
 
-  for (let control of entryControls) {
+  for (let i = 0; i < entryControls.length; i++) {
+    const control = entryControls[i];
+
     const { type, inputType } = control;
     const absenceControl = createEntryControl({
       type,
@@ -53,6 +57,9 @@ function addListEntry({ entryType }) {
         value: 100,
       }),
       required: true,
+      ...(fieldValues.length && {
+        value: fieldValues[i],
+      }),
     });
 
     newEntry.append(absenceControl);
@@ -62,7 +69,7 @@ function addListEntry({ entryType }) {
   addSubmissionListener(newEntry);
   makeSelectable(newEntry);
 
-  entryList.append(newEntry);
+  return newEntry;
 }
 
 function addAbsenceEntry() {
@@ -307,6 +314,7 @@ export {
   addEmploymentEntry,
   clearActiveListSelection,
   deleteActiveEntry,
+  getListEntry,
   setTrashActive,
   toggleActiveListOnClick,
   updateEntrySelectionOnPage,
