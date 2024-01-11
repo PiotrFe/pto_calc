@@ -6,6 +6,7 @@ import {
   clearControlListeners,
   setItemActive,
 } from "./listeners.js";
+import { addListEntryClassNames } from "./styling.js";
 import { makeSelectable } from "./utils.js";
 
 const baseEntryControls = [
@@ -21,15 +22,17 @@ const absenceEntryControls = [
 function addListEntry({ entryType }) {
   const newEntry = document.createElement("form");
   const elemIdx = Date.now();
+
+  newEntry.method = "POST";
+  newEntry.dataset.entryType = entryType;
+
   const entryList = document.getElementById(
     entryType === CONSTANTS.ENTRY_TYPES.ABSENCE
       ? CONSTANTS.IDS.ABSENCE_ENTRIES
       : CONSTANTS.IDS.EMPLOYMENT_ENTRIES
   );
 
-  newEntry.classList.add("mb-3");
-  newEntry.classList.add("row");
-  newEntry.classList.add(CONSTANTS.CLASS_NAMES.LIST_ENTRY);
+  addListEntryClassNames(newEntry);
 
   const entryControls = [
     ...baseEntryControls,
@@ -49,6 +52,7 @@ function addListEntry({ entryType }) {
         max: 100,
         value: 100,
       }),
+      required: true,
     });
 
     newEntry.append(absenceControl);
@@ -209,7 +213,18 @@ function updateEntrySelectionOnPage(e) {
     return;
   }
 
+  submitActiveFormEntry();
   clearEntrySelection();
+}
+
+function submitActiveFormEntry() {
+  const elem = document.querySelector(
+    `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
+  );
+
+  if (elem) {
+    elem.requestSubmit();
+  }
 }
 
 function clearEntrySelection() {

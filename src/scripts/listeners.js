@@ -1,6 +1,7 @@
 import { parseTsFromId } from "./utils.js";
 import { CONSTANTS } from "./constants.js";
 import { clearActiveListSelection, setTrashActive } from "./comp-functions.js";
+import { addListEntryClassNames } from "./styling.js";
 
 // ADDING
 function addDateListener(elem) {
@@ -12,7 +13,6 @@ function addActiveEntryListener(elem) {
 }
 
 function addSubmissionListener(elem) {
-  console.log({ elem });
   elem.addEventListener("submit", submissionListener);
 }
 
@@ -101,8 +101,9 @@ function activeEntryListener(e) {
 }
 
 function submissionListener(e) {
-  console.log("Running");
   e.preventDefault();
+  const elem = e.target;
+  convertEntryToDiv(elem);
 }
 
 function setItemActive(elem) {
@@ -111,13 +112,29 @@ function setItemActive(elem) {
   );
 
   if (currSelectedElem) {
-    currSelectedElem.submit && currSelectedElem.submit();
     currSelectedElem.classList.remove(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
   }
 
   elem.classList.add(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
   setTrashActive(true);
   clearActiveListSelection();
+}
+
+function convertEntryToDiv(elem) {
+  if (!elem) {
+    return;
+  }
+  const { entryType } = elem.dataset;
+  const entryList = document.getElementById(
+    entryType === CONSTANTS.ENTRY_TYPES.ABSENCE
+      ? CONSTANTS.IDS.ABSENCE_ENTRIES
+      : CONSTANTS.IDS.EMPLOYMENT_ENTRIES
+  );
+
+  console.log({ elem, children: elem.children, entryType, entryList });
+
+  const divElem = document.createElement("div");
+  addListEntryClassNames(divElem);
 }
 
 export {
