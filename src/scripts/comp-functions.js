@@ -6,7 +6,7 @@ import {
   clearControlListeners,
   setItemActive,
 } from "./listeners.js";
-import { addListEntryClassNames } from "./styling.js";
+import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
 import { makeSelectable } from "./utils.js";
 
 const baseEntryControls = [
@@ -130,11 +130,6 @@ function deleteActiveEntry() {
 
 function createEntryControl({ type, inputType, idx, ...otherProps }) {
   const divElem = document.createElement("div");
-  const width = inputType === "date" ? 3 : inputType === "number" ? 2 : null;
-  const widthClass = width ? `col-${width}` : "col";
-
-  divElem.classList.add(widthClass);
-  divElem.classList.add(CONSTANTS.CLASS_NAMES.LIST_ENTRY_CONTROL);
 
   const { inputElem } = createControl({
     inputType,
@@ -148,6 +143,8 @@ function createEntryControl({ type, inputType, idx, ...otherProps }) {
     appendAbsenceOptions(inputElem);
     inputElem.value = CONSTANTS.ABSENCE_REASONS?.[0] || "";
   }
+
+  addEntryFieldClassNames({ elem: divElem, inputType, isStatic: false });
 
   divElem.append(inputElem);
 

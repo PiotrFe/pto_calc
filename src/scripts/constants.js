@@ -4,6 +4,7 @@ export const CONSTANTS = {
     LIST_ACTIVE: "list-active",
     LIST_ENTRIES: "list-entries",
     LIST_ENTRY_CONTROL: "list-entry-control",
+    LIST_ENTRY_CONTROL_STATIC: "list-entry-control-static",
     LIST_ENTRY_DATE_FROM: "list-entry-date-from",
     LIST_ENTRY_DATE_TO: "list-entry-date-to",
     LIST_ENTRY: "list-entry",

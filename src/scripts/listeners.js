@@ -1,7 +1,7 @@
-import { parseTsFromId } from "./utils.js";
+import { getListByEntryName, parseTsFromId } from "./utils.js";
 import { CONSTANTS } from "./constants.js";
 import { clearActiveListSelection, setTrashActive } from "./comp-functions.js";
-import { addListEntryClassNames } from "./styling.js";
+import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
 
 // ADDING
 function addDateListener(elem) {
@@ -125,16 +125,28 @@ function convertEntryToDiv(elem) {
     return;
   }
   const { entryType } = elem.dataset;
-  const entryList = document.getElementById(
-    entryType === CONSTANTS.ENTRY_TYPES.ABSENCE
-      ? CONSTANTS.IDS.ABSENCE_ENTRIES
-      : CONSTANTS.IDS.EMPLOYMENT_ENTRIES
-  );
 
-  console.log({ elem, children: elem.children, entryType, entryList });
+  const entryList = getListByEntryName(entryType);
 
   const divElem = document.createElement("div");
+  const childDivArr = Array.from(elem.children).map((divElem) => {
+    const inputElem = divElem.children.item(0);
+    const inputType = inputElem.type;
+    const childDiv = document.createElement("div");
+    addEntryFieldClassNames({ elem: childDiv, inputType, isStatic: true });
+
+    childDiv.textContent = inputElem.value;
+
+    return childDiv;
+  });
+
+  for (let childDiv of childDivArr) {
+    divElem.append(childDiv);
+  }
+
   addListEntryClassNames(divElem);
+
+  entryList.replaceChild(divElem, elem);
 }
 
 export {
