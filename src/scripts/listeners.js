@@ -4,6 +4,7 @@ import {
   clearActiveListSelection,
   getListEntry,
   setTrashActive,
+  submitActiveFormEntry,
 } from "./comp-functions.js";
 import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
 
@@ -90,6 +91,13 @@ function dateChangeListener(e) {
   const siblingId = `${siblingName}-${siblingIdTs}`;
   const siblingDate = document.getElementById(siblingId);
 
+  console.log({
+    siblingName,
+    siblingIdTs,
+    siblingId,
+    siblingDate,
+  });
+
   siblingDate.min = null;
   siblingDate.max = null;
 
@@ -123,7 +131,15 @@ function setItemActive(elem) {
     `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
   );
 
-  if (currSelectedElem) {
+  if (currSelectedElem && elem !== currSelectedElem) {
+    const isEditable = currSelectedElem.classList.contains(
+      CONSTANTS.CLASS_NAMES.LIST_ENTRY_EDITABLE
+    );
+
+    if (isEditable) {
+      submitActiveFormEntry();
+      // convertEntryToDiv(currSelectedElem);
+    }
     currSelectedElem.classList.remove(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
   }
 
@@ -175,14 +191,19 @@ function convertDivToEntry(elem) {
   const childClicked = elem.classList.contains(
     CONSTANTS.CLASS_NAMES.LIST_ENTRY_CONTROL_STATIC
   );
-  const divElem = childClicked ? elem.parentElement : elen;
+  const divElem = childClicked ? elem.parentElement : elem;
   const entryType = divElem.dataset.entrytype;
 
-  const entryElem = getListEntry({ entryType });
+  const fieldValues = Array.from(divElem.children).map(
+    (child) => child.textContent
+  );
+
+  const entryElem = getListEntry({ entryType, fieldValues });
   const entryList = getListByEntryName(entryType);
 
   clearControlListeners(divElem);
   entryList.replaceChild(entryElem, divElem);
+  setItemActive(entryElem);
 }
 
 export {

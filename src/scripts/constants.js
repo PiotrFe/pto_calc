@@ -8,6 +8,7 @@ export const CONSTANTS = {
     LIST_ENTRY_DATE_FROM: "list-entry-date-from",
     LIST_ENTRY_DATE_TO: "list-entry-date-to",
     LIST_ENTRY: "list-entry",
+    LIST_ENTRY_EDITABLE: "list-entry-editable",
     LIST_ENTRY_PERCENT: "list-entry-percent",
     LIST_ENTRY_REASON: "list-entry-reason",
     CLICKABLE: "clickable",
@@ -45,6 +46,7 @@ export const CONSTANTS = {
   CONTROL_TYPES: {
     LIST_ENTRY_DATE_FROM: "list-entry-date-from",
     LIST_ENTRY_DATE_TO: "list-entry-date-to",
+    LIST_ENTRY_NUMBER: "list-entry-number",
     LIST_ENTRY_PERCENT: "list-entry-percent",
   },
   SORT_STATUS: {

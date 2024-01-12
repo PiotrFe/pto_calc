@@ -10,9 +10,9 @@ import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
 import { getListByEntryName, makeSelectable } from "./utils.js";
 
 const baseEntryControls = [
-  { type: CONSTANTS.IDS.ABSENCE_DATE_FROM, inputType: "date" },
-  { type: CONSTANTS.IDS.ABSENCE_DATE_TO, inputType: "date" },
-  { type: CONSTANTS.IDS.ABSENCE_PERCENT, inputType: "number" },
+  { type: CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_FROM, inputType: "date" },
+  { type: CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_TO, inputType: "date" },
+  { type: CONSTANTS.CONTROL_TYPES.LIST_ENTRY_NUMBER, inputType: "number" },
 ];
 
 const absenceEntryControls = [
@@ -47,6 +47,7 @@ function getListEntry({ entryType, fieldValues = [] }) {
     const control = entryControls[i];
 
     const { type, inputType } = control;
+
     const absenceControl = createEntryControl({
       type,
       inputType,
@@ -135,20 +136,35 @@ function deleteActiveEntry() {
   }
 }
 
-function createEntryControl({ type, inputType, idx, ...otherProps }) {
+function createEntryControl({ type, inputType, idx, value, ...otherProps }) {
   const divElem = document.createElement("div");
+  const classListArr = ["form-control", type];
+
+  if (type === CONSTANTS.IDS.ABSENCE_DATE_FROM) {
+    classListArr.push(CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_FROM);
+  }
+
+  if (type === CONSTANTS.IDS.ABSENCE_DATE_TO) {
+    classListArr.push(CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_TO);
+  }
 
   const { inputElem } = createControl({
     inputType,
     id: `${type}-${idx}`,
     type,
-    classListArr: ["form-control", type],
+    classListArr,
+    value,
     ...otherProps,
   });
 
   if (inputType === "select") {
     appendAbsenceOptions(inputElem);
-    inputElem.value = CONSTANTS.ABSENCE_REASONS?.[0] || "";
+
+    if (!value) {
+      inputElem.value = CONSTANTS.ABSENCE_REASONS?.[0] || "";
+    } else {
+      inputElem.value = value;
+    }
   }
 
   addEntryFieldClassNames({ elem: divElem, inputType, isStatic: false });
@@ -316,6 +332,7 @@ export {
   deleteActiveEntry,
   getListEntry,
   setTrashActive,
+  submitActiveFormEntry,
   toggleActiveListOnClick,
   updateEntrySelectionOnPage,
 };
