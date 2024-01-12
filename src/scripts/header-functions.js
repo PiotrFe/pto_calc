@@ -1,87 +1,143 @@
 import { CONSTANTS } from "./constants.js";
 
-function updateHeaderSort(e) {
-  const elem = e.target;
+function addHeaderListeners() {
+  document
+    .querySelector("#employment-from")
+    .addEventListener("click", () =>
+      updateHeaderSort(
+        CONSTANTS.ENTRY_TYPES.EMPLOYMENT,
+        CONSTANTS.SORT_FIELDS.FROM
+      )
+    );
 
-  if (!elem) {
-    return;
-  }
+  document.querySelector("#employment-to").addEventListener("click", () => {
+    updateHeaderSort(
+      CONSTANTS.ENTRY_TYPES.EMPLOYMENT,
+      CONSTANTS.SORT_FIELDS.TO
+    );
+  });
 
-  const isSortable = elem.classList.contains(CONSTANTS.CLASS_NAMES.SORTABLE);
+  document
+    .querySelector("#employment-percent")
+    .addEventListener("click", () => {
+      updateHeaderSort(
+        CONSTANTS.ENTRY_TYPES.EMPLOYMENT,
+        CONSTANTS.SORT_FIELDS.PERCENT
+      );
+    });
 
-  if (!isSortable) {
-    return;
-  }
+  document.querySelector("#absence-from").addEventListener("click", () => {
+    updateHeaderSort(CONSTANTS.ENTRY_TYPES.ABSENCE, CONSTANTS.SORT_FIELDS.FROM);
+  });
 
-  const sortStatus = updateSortStatus(elem);
+  document.querySelector("#absence-to").addEventListener("click", () => {
+    updateHeaderSort(CONSTANTS.ENTRY_TYPES.ABSENCE, CONSTANTS.SORT_FIELDS.TO);
+  });
 
-  if (sortStatus === CONSTANTS.SORT_STATUS.NONE) {
-    return;
-  }
+  document.querySelector("#absence-percent").addEventListener("click", () => {
+    updateHeaderSort(
+      CONSTANTS.ENTRY_TYPES.ABSENCE,
+      CONSTANTS.SORT_FIELDS.PERCENT
+    );
+  });
 
-  sortData({ byField: elem.textContent.toUpperCase(), dir: sortStatus });
+  document.querySelector("#absence-reason").addEventListener("click", () => {
+    updateHeaderSort(
+      CONSTANTS.ENTRY_TYPES.ABSENCE,
+      CONSTANTS.SORT_FIELDS.REASON
+    );
+  });
 }
 
-function updateSortStatus(elem) {
-  const isClickable = elem.classList.contains(CONSTANTS.CLASS_NAMES.CLICKABLE);
-
-  if (!isClickable) {
+function updateHeaderSort(hName, fName) {
+  if (!hName || !fName) {
     return;
   }
 
-  const currentSort = document.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.SORTED}`
+  const headerName = hName.toLowerCase();
+  const fieldName = fName.toLowerCase();
+
+  const parentHeaderElem = document.querySelector(`#${headerName}-list`);
+  const newSortFieldElem = document.querySelector(
+    `#${headerName}-${fieldName}`
   );
+
+  if (
+    !newSortFieldElem ||
+    !newSortFieldElem.classList.contains(CONSTANTS.CLASS_NAMES.SORTABLE)
+  ) {
+    return;
+  }
+
+  const sortStatus = updateSortStatus(parentHeaderElem, newSortFieldElem);
+
+  // if (sortStatus === CONSTANTS.SORT_STATUS.NONE) {
+  //   return;
+  // }
+
+  // sortData({ byField: elem.textContent.toUpperCase(), dir: sortStatus });
+}
+
+function updateSortStatus(headerElem, elem) {
+  if (!elem || !headerElem) {
+    return;
+  }
+
+  const currentSortArr = Array.from(
+    document.querySelectorAll(`.${CONSTANTS.CLASS_NAMES.SORTED}`)
+  );
+
+  const currentSort = currentSortArr.find((e) => {
+    const parentListName = `${e.id}`.split("-")?.[0];
+
+    return `${parentListName}-list` === headerElem.id;
+  });
 
   if (currentSort && currentSort !== elem) {
     currentSort.classList.remove(CONSTANTS.CLASS_NAMES.SORTED);
     currentSort.classList.remove(CONSTANTS.CLASS_NAMES.SORTED_ASC);
     currentSort.classList.remove(CONSTANTS.CLASS_NAMES.SORTED_DESC);
 
-    updateSortIconOnParent({ elem: currentSort, shouldAdd: false });
+    updateSortIconOnHeader({ elem: currentSort });
   }
 
   const isSorted = elem.classList.contains(CONSTANTS.CLASS_NAMES.SORTED);
-
-  if (!isSorted) {
-    elem.classList.add(CONSTANTS.CLASS_NAMES.SORTED);
-    elem.classList.add(CONSTANTS.CLASS_NAMES.SORTED_ASC);
-
-    updateSortIconOnParent({ elem, shouldAdd: true, dir: "asc" });
-
-    return CONSTANTS.SORT_STATUS.ASC;
-  }
-
   const isSortedDesc = elem.classList.contains(
     CONSTANTS.CLASS_NAMES.SORTED_DESC
   );
 
-  if (isSortedDesc) {
-    elem.classList.remove(CONSTANTS.CLASS_NAMES.SORTED);
-    elem.classList.remove(CONSTANTS.CLASS_NAMES.SORTED_DESC);
-
-    updateSortIconOnParent({ elem, shouldAdd: false });
-
-    return CONSTANTS.SORT_STATUS.NONE;
-  } else {
-    elem.classList.remove(CONSTANTS.CLASS_NAMES.SORTED_ASC);
+  if (!isSorted) {
+    elem.classList.add(CONSTANTS.CLASS_NAMES.SORTED);
     elem.classList.add(CONSTANTS.CLASS_NAMES.SORTED_DESC);
 
-    updateSortIconOnParent({ elem, shouldAdd: false });
-    updateSortIconOnParent({ elem, shouldAdd: true, dir: "desc" });
+    updateSortIconOnHeader({ elem, dir: "desc" });
 
     return CONSTANTS.SORT_STATUS.DESC;
+  } else if (isSortedDesc) {
+    elem.classList.remove(CONSTANTS.CLASS_NAMES.SORTED_DESC);
+    elem.classList.add(CONSTANTS.CLASS_NAMES.SORTED_ASC);
+
+    updateSortIconOnHeader({ elem });
+    updateSortIconOnHeader({ elem, dir: "asc" });
+
+    return CONSTANTS.SORT_STATUS.DESC;
+  } else {
+    elem.classList.remove(CONSTANTS.CLASS_NAMES.SORTED);
+    elem.classList.remove(CONSTANTS.CLASS_NAMES.SORTED_ASC);
+
+    updateSortIconOnHeader({ elem });
+
+    return CONSTANTS.SORT_STATUS.NONE;
   }
 }
 
-function updateSortIconOnParent({ elem, shouldAdd = false, dir = "asc" }) {
+function updateSortIconOnHeader({ elem, dir }) {
   if (!elem) {
     return;
   }
-  const parent = elem.parentElement;
 
-  if (!shouldAdd) {
-    const icon = parent.querySelector(`.${CONSTANTS.CLASS_NAMES.SORT_ICON}`);
+  if (!dir) {
+    const icon = elem.querySelector(`.${CONSTANTS.CLASS_NAMES.SORT_ICON}`);
     icon.remove();
 
     return;
@@ -91,7 +147,7 @@ function updateSortIconOnParent({ elem, shouldAdd = false, dir = "asc" }) {
   icon.classList.add("bi");
   icon.classList.add(dir === "asc" ? "bi-sort-up-alt" : "bi-sort-down");
   icon.classList.add(CONSTANTS.CLASS_NAMES.SORT_ICON);
-  parent.append(icon);
+  elem.append(icon);
 }
 
 function sortData({ byField, dir }) {
@@ -136,8 +192,8 @@ function sortData({ byField, dir }) {
     const sortFieldA = elemA.querySelector(`.${sortByElem}`);
     const sortFieldB = elemB.querySelector(`.${sortByElem}`);
 
-    const valA = sortFieldA.value;
-    const valB = sortFieldB.value;
+    const valA = sortFieldA.dataset.entryVal;
+    const valB = sortFieldB.dataset.entryVal;
 
     let parsedValA;
     let parsedValB;
@@ -166,4 +222,4 @@ function sortData({ byField, dir }) {
   elemArr.forEach((e) => parentElem.appendChild(e));
 }
 
-export { updateHeaderSort };
+export { addHeaderListeners };

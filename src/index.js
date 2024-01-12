@@ -1,6 +1,4 @@
 import {
-  addAbsenceEntry,
-  addEmploymentEntry,
   addListEntry,
   addListEntryOnClick,
   deleteActiveEntry,
@@ -8,7 +6,7 @@ import {
   updateEntrySelectionOnPage,
 } from "./scripts/comp-functions.js";
 
-import { updateHeaderSort } from "./scripts/header-functions.js";
+import { addHeaderListeners } from "./scripts/header-functions.js";
 
 import { CONSTANTS } from "./scripts/constants.js";
 
@@ -31,9 +29,10 @@ function init() {
   addBtn.addEventListener("click", addListEntryOnClick);
   deleteBtn.addEventListener("click", deleteActiveEntry);
   pageElem.addEventListener("click", updateEntrySelectionOnPage);
-  headerElem.addEventListener("click", updateHeaderSort);
   employmentEntries.addEventListener("click", toggleActiveListOnClick);
   absenceEntries.addEventListener("click", toggleActiveListOnClick);
+
+  addHeaderListeners();
 
   addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.ABSENCE });
   addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.EMPLOYMENT });
