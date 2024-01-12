@@ -91,13 +91,6 @@ function dateChangeListener(e) {
   const siblingId = `${siblingName}-${siblingIdTs}`;
   const siblingDate = document.getElementById(siblingId);
 
-  console.log({
-    siblingName,
-    siblingIdTs,
-    siblingId,
-    siblingDate,
-  });
-
   siblingDate.min = null;
   siblingDate.max = null;
 
@@ -138,7 +131,6 @@ function setItemActive(elem) {
 
     if (isEditable) {
       submitActiveFormEntry();
-      // convertEntryToDiv(currSelectedElem);
     }
     currSelectedElem.classList.remove(CONSTANTS.CLASS_NAMES.CONTROL_SELECTED);
   }
@@ -166,9 +158,19 @@ function convertEntryToDiv(entryElem) {
     const inputElem = divElem.children.item(0);
     const inputType = inputElem.type;
     const childDiv = document.createElement("div");
+
     addEntryFieldClassNames({ elem: childDiv, inputType, isStatic: true });
 
-    childDiv.textContent = inputElem.value;
+    childDiv.dataset.entryVal = inputElem.value;
+
+    if (inputType !== "date") {
+      childDiv.textContent = inputElem.value;
+    } else {
+      const d = new Date(inputElem.value);
+      childDiv.textContent = `${d.getDate()}-${
+        `${d.getMonth()}`.padStart(1, 0) + 1
+      }-${d.getFullYear()}`;
+    }
 
     return childDiv;
   });
@@ -195,7 +197,7 @@ function convertDivToEntry(elem) {
   const entryType = divElem.dataset.entrytype;
 
   const fieldValues = Array.from(divElem.children).map(
-    (child) => child.textContent
+    (child) => child.dataset.entryVal
   );
 
   const entryElem = getListEntry({ entryType, fieldValues });
