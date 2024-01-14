@@ -11,9 +11,10 @@ import {
   getActiveEntry,
   getActiveEntryList,
   getListByEntryName,
-  getPasteDataWindow,
   makeSelectable,
 } from "./utils.js";
+
+import { parseModalContent } from "./modal-parser.js";
 
 const baseEntryControls = [
   { type: CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_FROM, inputType: "date" },
@@ -258,6 +259,10 @@ function toggleActiveListOnClick(e) {
   }
 }
 
+function saveModalContent() {
+  parseModalContent();
+}
+
 export {
   addListEntry,
   addListEntryOnClick,
@@ -266,6 +271,7 @@ export {
   clearActiveListSelection,
   deleteActiveEntry,
   getListEntry,
+  saveModalContent,
   setTrashActive,
   submitActiveFormEntry,
   toggleActiveListOnClick,

@@ -36,8 +36,9 @@ export const CONSTANTS = {
     EMPLOYMENT_LIST: "employment-list",
     EMPLOYMENT_HEADER: "employment-header",
     EMPLOYMENT_ENTRIES: "employment-entries",
+    MODAL_TEXT_AREA: "modal-text-area",
     PAGE_CONTENT: "page-content",
-    PASTE_DATA_WINDOW: "paste-data-window",
+    SAVE_MODAL_CONTENT_BUTTON: "btn_save_modal",
   },
   ABSENCE_REASONS: [
     "Sickness",

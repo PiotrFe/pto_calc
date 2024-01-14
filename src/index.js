@@ -2,6 +2,7 @@ import {
   addListEntry,
   addListEntryOnClick,
   deleteActiveEntry,
+  saveModalContent,
   toggleActiveListOnClick,
   updateEntrySelectionOnPage,
 } from "./scripts/comp-functions.js";
@@ -14,8 +15,8 @@ init();
 
 function init() {
   const addBtn = document.getElementById(CONSTANTS.IDS.BTN_ADD_LIST_ENTRY);
-  const addMultipleBtn = document.getElementById(
-    CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE
+  const saveModalContentBtn = document.getElementById(
+    CONSTANTS.IDS.SAVE_MODAL_CONTENT_BUTTON
   );
   const deleteBtn = document.getElementById(
     CONSTANTS.IDS.BTN_DELETE_LIST_ENTRY
@@ -23,7 +24,7 @@ function init() {
   const pageElem = document.querySelector(
     `.${CONSTANTS.CLASS_NAMES.PAGE_MAIN}`
   );
-  const headerElem = document.getElementById(CONSTANTS.IDS.ABSENCE_HEADER);
+
   const employmentEntries = document.getElementById(
     CONSTANTS.IDS.EMPLOYMENT_ENTRIES
   );
@@ -34,6 +35,7 @@ function init() {
   pageElem.addEventListener("click", updateEntrySelectionOnPage);
   employmentEntries.addEventListener("click", toggleActiveListOnClick);
   absenceEntries.addEventListener("click", toggleActiveListOnClick);
+  saveModalContentBtn.addEventListener("click", saveModalContent);
 
   addHeaderListeners();
 
