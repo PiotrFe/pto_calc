@@ -31,10 +31,13 @@ export const CONSTANTS = {
     ABSENCE_ENTRIES: "absence-entries",
     ABSENCE_HEADER: "absence-header",
     BTN_ADD_LIST_ENTRY: "btn-add-list-entry",
+    BTN_ADD_LIST_ENTRY_MULTIPLE: "btn-add-list-entry-multiple",
     BTN_DELETE_LIST_ENTRY: "btn-delete-list-entry",
     EMPLOYMENT_LIST: "employment-list",
     EMPLOYMENT_HEADER: "employment-header",
     EMPLOYMENT_ENTRIES: "employment-entries",
+    PAGE_CONTENT: "page-content",
+    PASTE_DATA_WINDOW: "paste-data-window",
   },
   ABSENCE_REASONS: [
     "Sickness",

@@ -14,6 +14,9 @@ init();
 
 function init() {
   const addBtn = document.getElementById(CONSTANTS.IDS.BTN_ADD_LIST_ENTRY);
+  const addMultipleBtn = document.getElementById(
+    CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE
+  );
   const deleteBtn = document.getElementById(
     CONSTANTS.IDS.BTN_DELETE_LIST_ENTRY
   );

@@ -24,3 +24,12 @@ export const getListByEntryName = (entryName) => {
 
   return document.getElementById(listName);
 };
+
+export const getActiveEntryList = () =>
+  document.querySelector(`.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`);
+
+export const getActiveEntry = () =>
+  document.querySelector(`.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`);
+
+export const getPasteDataWindow = () =>
+  document.querySelector(`.${CONSTANTS.IDS.PASTE_DATA_WINDOW}`);

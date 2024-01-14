@@ -23,9 +23,9 @@
     <script src="scripts/header-functions.js" type="module"></script>
   </head>
   <body>
-    <div class="page-main">
+    <div id="page-main" class="page-main">
       <div class="page-background container-fluid">
-        <div class="page-content">
+        <div id="page-content" class="page-content">
           <div class="entry-lists">
             <div id="employment-list" class="entry-list">
               <h1 class="display-4 section-title">Employment</h1>
@@ -45,7 +45,7 @@
                   </div>
                 </div>
               </div>
-              <div id="employment-entries" class="list-entries"></div>
+              <div id="employment-entries" class="list-entries clickable"></div>
             </div>
             <div id="absence-list" class="entry-list">
               <h1 class="display-4 section-title">Absences</h1>
@@ -71,7 +71,7 @@
                   </div>
                 </div>
               </div>
-              <div id="absence-entries" class="list-entries"></div>
+              <div id="absence-entries" class="list-entries clickable"></div>
             </div>
           </div>
         </div>
@@ -82,10 +82,50 @@
         <i class="bi bi-plus-lg"></i>
       </div>
       <div
+        id="btn-add-list-entry-multiple"
+        class="list-entry-icon clickable"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        <i class="bi bi-table"></i>
+      </div>
+      <div
         id="btn-delete-list-entry"
         class="list-entry-icon icon-disabled clickable"
       >
         <i class="bi bi-trash"></i>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>

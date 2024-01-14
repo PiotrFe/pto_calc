@@ -1,13 +1,19 @@
 import { CONSTANTS } from "./constants.js";
 import {
   addActiveEntryListener,
-  addDateListener,
   addSubmissionListener,
   clearControlListeners,
   setItemActive,
 } from "./listeners.js";
-import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
-import { getListByEntryName, makeSelectable } from "./utils.js";
+import { addListEntryClassNames } from "./styling.js";
+import { createEntryControl } from "./elem.factory.js";
+import {
+  getActiveEntry,
+  getActiveEntryList,
+  getListByEntryName,
+  getPasteDataWindow,
+  makeSelectable,
+} from "./utils.js";
 
 const baseEntryControls = [
   { type: CONSTANTS.CONTROL_TYPES.LIST_ENTRY_DATE_FROM, inputType: "date" },
@@ -82,13 +88,8 @@ function addEmploymentEntry() {
 }
 
 function addListEntryOnClick() {
-  const activeList = document.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`
-  );
-
-  const activeEntry = document.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.CONTROL_SELECTED}`
-  );
+  const activeList = getActiveEntryList();
+  const activeEntry = getActiveEntry();
 
   if (!activeList && !activeEntry) {
     return;
@@ -126,98 +127,16 @@ function deleteActiveEntry() {
   clearControlListeners(activeEntry);
 
   const nextSibling = activeEntry.nextElementSibling;
+  const prevSibling = activeEntry.previousElementSibling;
 
   activeEntry.remove();
 
   if (nextSibling) {
     setItemActive(nextSibling);
+  } else if (prevSibling) {
+    setItemActive(prevSibling);
   } else {
     setTrashActive(false);
-  }
-}
-
-function createEntryControl({ type, inputType, idx, value, ...otherProps }) {
-  const divElem = document.createElement("div");
-  const classListArr = ["form-control", type];
-
-  if (type === CONSTANTS.IDS.ABSENCE_DATE_FROM) {
-    classListArr.push(CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_FROM);
-  }
-
-  if (type === CONSTANTS.IDS.ABSENCE_DATE_TO) {
-    classListArr.push(CONSTANTS.CLASS_NAMES.LIST_ENTRY_DATE_TO);
-  }
-
-  const { inputElem } = createControl({
-    inputType,
-    id: `${type}-${idx}`,
-    type,
-    classListArr,
-    value,
-    ...otherProps,
-  });
-
-  if (inputType === "select") {
-    appendAbsenceOptions(inputElem);
-
-    if (!value) {
-      inputElem.value = CONSTANTS.ABSENCE_REASONS?.[0] || "";
-    } else {
-      inputElem.value = value;
-    }
-  }
-
-  addEntryFieldClassNames({ elem: divElem, inputType, isStatic: false });
-
-  divElem.append(inputElem);
-
-  return divElem;
-}
-
-function createControl({
-  id,
-  classListArr = [],
-  inputType = "text",
-  type,
-  ...otherProps
-}) {
-  const elemType = inputType !== "select" ? "input" : "select";
-  let inputElem = document.createElement(elemType);
-
-  if (elemType !== "select") {
-    inputElem.type = inputType;
-  }
-
-  inputElem.id = id;
-
-  for (let [key, val] of Object.entries(otherProps)) {
-    inputElem[key] = val;
-  }
-
-  for (let cls of classListArr) {
-    inputElem.classList.add(cls);
-  }
-
-  inputElem.setAttribute("required", true);
-
-  if (inputType === "date") {
-    addDateListener(inputElem);
-  }
-
-  return { inputElem };
-}
-
-function appendAbsenceOptions(selectElem) {
-  if (!selectElem) {
-    return;
-  }
-
-  for (let absence of CONSTANTS.ABSENCE_REASONS) {
-    const optionElem = document.createElement("option");
-    optionElem.value = absence;
-    optionElem.textContent = absence;
-
-    selectElem.append(optionElem);
   }
 }
 
@@ -235,6 +154,10 @@ function updateEntrySelectionOnPage(e) {
 
   submitActiveFormEntry();
   clearEntrySelection();
+
+  if ((e.target.id = CONSTANTS.IDS.PAGE_CONTENT)) {
+    clearActiveListSelection();
+  }
 }
 
 function submitActiveFormEntry() {
@@ -268,7 +191,23 @@ function setTrashActive(active = false) {
     return;
   }
 
-  const isDisabled = trashElem.classList.contains(
+  setBtnActive(trashElem, active);
+}
+
+function setAddMultipleActive(active = false) {
+  const btn = document.querySelector(
+    `#${CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE}`
+  );
+
+  if (!btn) {
+    return;
+  }
+
+  setBtnActive(btn, active);
+}
+
+function setBtnActive(btnElem, active) {
+  const isDisabled = btnElem.classList.contains(
     CONSTANTS.CLASS_NAMES.ICON_DISABLED
   );
 
@@ -279,16 +218,14 @@ function setTrashActive(active = false) {
   }
 
   if (active) {
-    trashElem.classList.remove(CONSTANTS.CLASS_NAMES.ICON_DISABLED);
+    btnElem.classList.remove(CONSTANTS.CLASS_NAMES.ICON_DISABLED);
   } else {
-    trashElem.classList.add(CONSTANTS.CLASS_NAMES.ICON_DISABLED);
+    btnElem.classList.add(CONSTANTS.CLASS_NAMES.ICON_DISABLED);
   }
 }
 
 function clearActiveListSelection() {
-  const activeList = document.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`
-  );
+  const activeList = getActiveEntryList();
 
   if (activeList) {
     activeList.classList.remove(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
@@ -308,9 +245,7 @@ function toggleActiveListOnClick(e) {
   const isActive = listElem.classList.contains(
     CONSTANTS.CLASS_NAMES.LIST_ACTIVE
   );
-  const activeList = document.querySelector(
-    `.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`
-  );
+  const activeList = getActiveEntryList();
 
   if (activeList) {
     activeList.classList.remove(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
