@@ -25,6 +25,18 @@ export const getListByEntryName = (entryName) => {
   return document.getElementById(listName);
 };
 
+export const toggleModalLaunchPropOnBtn = (active) => {
+  const btn = document.getElementById(
+    CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE
+  );
+
+  if (active) {
+    btn.dataset.bsToggle = "modal";
+  } else {
+    delete btn.dataset.bsToggle;
+  }
+};
+
 export const getActiveEntryList = () =>
   document.querySelector(`.${CONSTANTS.CLASS_NAMES.LIST_ACTIVE}`);
 

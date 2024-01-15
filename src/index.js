@@ -7,6 +7,7 @@ import {
   updateEntrySelectionOnPage,
 } from "./scripts/comp-functions.js";
 
+import { modalLaunchListener } from "./scripts/listeners.js";
 import { addHeaderListeners } from "./scripts/header-functions.js";
 
 import { CONSTANTS } from "./scripts/constants.js";
@@ -15,6 +16,9 @@ init();
 
 function init() {
   const addBtn = document.getElementById(CONSTANTS.IDS.BTN_ADD_LIST_ENTRY);
+  const launchModalButton = document.getElementById(
+    CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE
+  );
   const saveModalContentBtn = document.getElementById(
     CONSTANTS.IDS.SAVE_MODAL_CONTENT_BUTTON
   );
@@ -31,10 +35,11 @@ function init() {
   const absenceEntries = document.getElementById(CONSTANTS.IDS.ABSENCE_ENTRIES);
 
   addBtn.addEventListener("click", addListEntryOnClick);
-  deleteBtn.addEventListener("click", deleteActiveEntry);
-  pageElem.addEventListener("click", updateEntrySelectionOnPage);
-  employmentEntries.addEventListener("click", toggleActiveListOnClick);
   absenceEntries.addEventListener("click", toggleActiveListOnClick);
+  deleteBtn.addEventListener("click", deleteActiveEntry);
+  employmentEntries.addEventListener("click", toggleActiveListOnClick);
+  launchModalButton.addEventListener("click", modalLaunchListener);
+  pageElem.addEventListener("click", updateEntrySelectionOnPage);
   saveModalContentBtn.addEventListener("click", saveModalContent);
 
   addHeaderListeners();

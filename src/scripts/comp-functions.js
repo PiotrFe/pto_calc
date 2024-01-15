@@ -12,6 +12,7 @@ import {
   getActiveEntryList,
   getListByEntryName,
   makeSelectable,
+  toggleModalLaunchPropOnBtn,
 } from "./utils.js";
 
 import { parseModalContent } from "./modal-parser.js";
@@ -158,6 +159,7 @@ function updateEntrySelectionOnPage(e) {
 
   if ((e.target.id = CONSTANTS.IDS.PAGE_CONTENT)) {
     clearActiveListSelection();
+    setAddMultipleActive(false);
   }
 }
 
@@ -204,6 +206,7 @@ function setAddMultipleActive(active = false) {
     return;
   }
 
+  toggleModalLaunchPropOnBtn(active);
   setBtnActive(btn, active);
 }
 
@@ -257,7 +260,11 @@ function toggleActiveListOnClick(e) {
   } else {
     listElem.classList.add(CONSTANTS.CLASS_NAMES.LIST_ACTIVE);
   }
+
+  setAddMultipleActive(true);
 }
+
+// MODAL FUNCTIONS
 
 function saveModalContent() {
   parseModalContent();

@@ -144,6 +144,19 @@ function staticDivClickListener(e) {
   convertDivToEntry(e.target);
 }
 
+function modalLaunchListener(e) {
+  const isDisabled = document
+    .querySelector(`#${CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE}`)
+    .classList.contains("icon-disabled");
+
+  console.log({ isDisabled });
+
+  if (isDisabled) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}
+
 // HELPERS
 
 function convertEntryToDiv(entryElem) {
@@ -213,6 +226,7 @@ export {
   addActiveEntryListener,
   addSubmissionListener,
   clearControlListeners,
+  modalLaunchListener,
   removeActiveEntryListener,
   removeDateListener,
   setItemActive,
