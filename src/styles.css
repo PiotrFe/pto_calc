@@ -47,7 +47,9 @@ html {
 *************************/
 
 .list-entries {
-  min-height: 200px;
+  min-height: 150px;
+  max-height: 350px;
+  overflow: auto;
 }
 
 .list-entries:hover {
@@ -59,12 +61,19 @@ html {
   background-color: pink;
 }
 
+.section-title {
+  margin-top: 50px;
+  border-top: 1px solid black;
+  background-color: var(--bs-gray-200);
+  text-align: center;
+}
+
 .entry-list-header {
-  margin-top: 5rem;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100px;
+  min-height: 20px;
 }
 
 .absence-header {

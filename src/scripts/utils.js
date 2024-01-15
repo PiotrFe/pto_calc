@@ -63,3 +63,14 @@ export const dateToString = (date, delimiter) => {
     return null;
   }
 };
+
+export const clearModalContent = () => {
+  const textArea = document.getElementById("modal-text-area");
+  textArea.value = "";
+};
+
+export const closeModal = () => {
+  const closeBtn = document.getElementById("close-modal-btn");
+  console.log({ closeBtn });
+  closeBtn.dispatchEvent(new Event("click"));
+};

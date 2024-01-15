@@ -17,8 +17,7 @@ export const parseModalContent = () => {
         return null;
       }
 
-      const [fromDateStr, toDateStr, percentStr, ...otherProps] =
-        row.split(" ");
+      const [fromDateStr, toDateStr, percentStr, absenceType] = row.split(" ");
 
       let fromDate = parseDateStr(fromDateStr);
       let toDate = parseDateStr(toDateStr);
@@ -32,6 +31,7 @@ export const parseModalContent = () => {
         dateToString(fromDate, "-"),
         dateToString(toDate, "-"),
         parseInt(percentStr),
+        absenceType,
       ];
     });
 

@@ -9,6 +9,8 @@ import {
 import { addListEntryClassNames } from "./styling.js";
 import { createEntryControl } from "./elem.factory.js";
 import {
+  clearModalContent,
+  closeModal,
   getActiveEntry,
   getActiveEntryList,
   getListByEntryName,
@@ -271,6 +273,7 @@ function saveModalContent() {
   const modalContentArr = parseModalContent();
 
   if (!modalContentArr?.length) {
+    // append error message
     return;
   }
 
@@ -288,15 +291,17 @@ function saveModalContent() {
   }
 
   const elemArr = modalContentArr.map((fieldValuesArr) => {
-    console.log({ fieldValuesArr });
-    const entryForm = getListEntry({ entryType, fieldValues: fieldValuesArr });
+    const entryForm = getListEntry({
+      entryType,
+      fieldValues: fieldValuesArr.filter((v) => v),
+    });
 
     return convertEntryToDiv(entryForm, false);
   });
 
-  console.log({ elemArr });
-
   elemArr.forEach((entryDiv) => activeEntryList.append(entryDiv));
+  clearModalContent();
+  closeModal();
 }
 
 export {
