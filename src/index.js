@@ -7,7 +7,6 @@ import {
   updateEntrySelectionOnPage,
 } from "./scripts/comp-functions.js";
 
-import { modalLaunchListener } from "./scripts/listeners.js";
 import { addHeaderListeners } from "./scripts/header-functions.js";
 
 import { CONSTANTS } from "./scripts/constants.js";
@@ -38,7 +37,6 @@ function init() {
   absenceEntries.addEventListener("click", toggleActiveListOnClick);
   deleteBtn.addEventListener("click", deleteActiveEntry);
   employmentEntries.addEventListener("click", toggleActiveListOnClick);
-  launchModalButton.addEventListener("click", modalLaunchListener);
   pageElem.addEventListener("click", updateEntrySelectionOnPage);
   saveModalContentBtn.addEventListener("click", saveModalContent);
 

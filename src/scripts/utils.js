@@ -45,3 +45,21 @@ export const getActiveEntry = () =>
 
 export const getPasteDataWindow = () =>
   document.querySelector(`.${CONSTANTS.IDS.PASTE_DATA_WINDOW}`);
+
+export const dateToString = (date, delimiter) => {
+  if (!date) {
+    return null;
+  }
+
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  const day = `${date.getDate()}`.padStart(2, 0);
+
+  if (delimiter === "/") {
+    return `${day}/${month}/${year}`;
+  } else if (delimiter === "-") {
+    return `${year}-${month}-${day}`;
+  } else {
+    return null;
+  }
+};

@@ -144,27 +144,14 @@ function staticDivClickListener(e) {
   convertDivToEntry(e.target);
 }
 
-function modalLaunchListener(e) {
-  const isDisabled = document
-    .querySelector(`#${CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE}`)
-    .classList.contains("icon-disabled");
-
-  console.log({ isDisabled });
-
-  if (isDisabled) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-}
-
 // HELPERS
 
-function convertEntryToDiv(entryElem) {
+function convertEntryToDiv(entryElem, replaceExisting = true) {
   if (!entryElem) {
     return;
   }
   const entryType = entryElem.dataset.entrytype;
-  const entryList = getListByEntryName(entryType);
+
   const divElem = document.createElement("div");
 
   const childDivArr = Array.from(entryElem.children).map((divElem) => {
@@ -199,7 +186,12 @@ function convertEntryToDiv(entryElem) {
 
   clearControlListeners(entryElem);
 
-  entryList.replaceChild(divElem, entryElem);
+  if (replaceExisting) {
+    const entryList = getListByEntryName(entryType);
+    entryList.replaceChild(divElem, entryElem);
+  }
+
+  return divElem;
 }
 
 function convertDivToEntry(elem) {
@@ -226,7 +218,7 @@ export {
   addActiveEntryListener,
   addSubmissionListener,
   clearControlListeners,
-  modalLaunchListener,
+  convertEntryToDiv,
   removeActiveEntryListener,
   removeDateListener,
   setItemActive,

@@ -3,6 +3,7 @@ import {
   addActiveEntryListener,
   addSubmissionListener,
   clearControlListeners,
+  convertEntryToDiv,
   setItemActive,
 } from "./listeners.js";
 import { addListEntryClassNames } from "./styling.js";
@@ -267,7 +268,35 @@ function toggleActiveListOnClick(e) {
 // MODAL FUNCTIONS
 
 function saveModalContent() {
-  parseModalContent();
+  const modalContentArr = parseModalContent();
+
+  if (!modalContentArr?.length) {
+    return;
+  }
+
+  const activeEntryList = getActiveEntryList();
+  const activeEntryListType = activeEntryList.id.split("-")[0];
+  const entryType =
+    activeEntryListType === "employment"
+      ? CONSTANTS.ENTRY_TYPES.EMPLOYMENT
+      : activeEntryListType === "absence"
+      ? CONSTANTS.ENTRY_TYPES.ABSENCE
+      : null;
+
+  if (!entryType) {
+    return;
+  }
+
+  const elemArr = modalContentArr.map((fieldValuesArr) => {
+    console.log({ fieldValuesArr });
+    const entryForm = getListEntry({ entryType, fieldValues: fieldValuesArr });
+
+    return convertEntryToDiv(entryForm, false);
+  });
+
+  console.log({ elemArr });
+
+  elemArr.forEach((entryDiv) => activeEntryList.append(entryDiv));
 }
 
 export {

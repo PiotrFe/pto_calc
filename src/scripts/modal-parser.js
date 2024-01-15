@@ -1,6 +1,7 @@
 import { CONSTANTS } from "./constants.js";
+import { dateToString } from "./utils.js";
 
-const slashRegex = /\d\d\d\d\/\d\d\/\d\d/gi;
+const slashRegex = /\d\d\/\d\d\/\d\d\d\d/gi;
 const dashRegex = /\d\d\d\d-\d\d-\d\d/gi;
 
 export const parseModalContent = () => {
@@ -16,45 +17,34 @@ export const parseModalContent = () => {
         return null;
       }
 
-      const [fromDateStr, toDateStr, percentStr, ...otherProps] = row;
+      const [fromDateStr, toDateStr, percentStr, ...otherProps] =
+        row.split(" ");
+
       let fromDate = parseDateStr(fromDateStr);
       let toDate = parseDateStr(toDateStr);
 
-      console.log({
-        fromDate,
-        toDate,
-      });
-
-      if (!fromDate || !toDate) {
+      if (!fromDate || !toDate || fromDate > toDate) {
         contentIsValid = false;
         return null;
       }
 
-      return {
-        fromDate,
-        toDate,
-        percentStr: parseInt(percentStr),
-        otherProps,
-      };
+      return [
+        dateToString(fromDate, "-"),
+        dateToString(toDate, "-"),
+        parseInt(percentStr),
+      ];
     });
 
   if (contentIsValid) {
-    console.log({ rowArr });
     return rowArr;
   } else {
-    console.log("Invalid content");
     return null;
   }
 };
 
 const parseDateStr = (dateStr) => {
-  console.log({
-    dateStr,
-    slashMatch: dateStr.match(slashRegex),
-    dashMatch: dateStr.match(dashRegex),
-  });
   if (dateStr.match(slashRegex)) {
-    const [day, month, year] = dateStr.split("-");
+    const [day, month, year] = dateStr.split("/");
     return new Date(`${year}-${month}-${day}`);
   } else if (dateStr.match(dashRegex)) {
     return new Date(dateStr);
