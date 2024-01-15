@@ -218,6 +218,7 @@ export {
   addActiveEntryListener,
   addSubmissionListener,
   clearControlListeners,
+  convertDivToEntry,
   convertEntryToDiv,
   removeActiveEntryListener,
   removeDateListener,

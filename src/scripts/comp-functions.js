@@ -3,6 +3,7 @@ import {
   addActiveEntryListener,
   addSubmissionListener,
   clearControlListeners,
+  convertDivToEntry,
   convertEntryToDiv,
   setItemActive,
 } from "./listeners.js";
@@ -138,8 +139,14 @@ function deleteActiveEntry() {
 
   if (nextSibling) {
     setItemActive(nextSibling);
+    if (nextSibling.tagName.toLocaleLowerCase() === "div") {
+      convertDivToEntry(nextSibling);
+    }
   } else if (prevSibling) {
     setItemActive(prevSibling);
+    if (prevSibling.tagName.toLocaleLowerCase() === "div") {
+      convertDivToEntry(prevSibling);
+    }
   } else {
     setTrashActive(false);
   }

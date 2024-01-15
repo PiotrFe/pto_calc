@@ -71,6 +71,6 @@ export const clearModalContent = () => {
 
 export const closeModal = () => {
   const closeBtn = document.getElementById("close-modal-btn");
-  console.log({ closeBtn });
+
   closeBtn.dispatchEvent(new Event("click"));
 };
