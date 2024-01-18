@@ -11,14 +11,15 @@ export const makeSelectable = (elem) => {
 };
 
 export const getListByEntryName = (entryName) => {
+  const n = entryName.toUpperCase();
   const listName =
-    entryName === CONSTANTS.ENTRY_TYPES.ABSENCE
+    n === CONSTANTS.ENTRY_TYPES.ABSENCE
       ? CONSTANTS.IDS.ABSENCE_ENTRIES
-      : entryName === CONSTANTS.ENTRY_TYPES.EMPLOYMENT
+      : n === CONSTANTS.ENTRY_TYPES.EMPLOYMENT
       ? CONSTANTS.IDS.EMPLOYMENT_ENTRIES
       : null;
 
-  if (!entryName) {
+  if (!listName) {
     return null;
   }
 
@@ -73,4 +74,10 @@ export const closeModal = () => {
   const closeBtn = document.getElementById("close-modal-btn");
 
   closeBtn.dispatchEvent(new Event("click"));
+};
+
+export const getListTypeFromListElem = (listElem) => {
+  if (!listElem) {
+    return;
+  }
 };

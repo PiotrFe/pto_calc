@@ -1,5 +1,5 @@
 import { CONSTANTS, entryOrder } from "./constants.js";
-import { getListByEntryName } from "./utils.js";
+import { getActiveEntryList, getListByEntryName } from "./utils.js";
 
 const currSortRegex = /sorted-\w{3,4}/gi;
 
@@ -22,11 +22,17 @@ function getCurrentSortName(elem) {
     return null;
   }
 
-  return Array.from(elem.classList).find((className) => {
+  const sortClass = Array.from(elem.classList).find((className) => {
     const regexMatch = className.match(currSortRegex);
 
     return regexMatch?.[0];
   });
+
+  if (sortClass) {
+    return sortClass.split("-")?.[1];
+  }
+
+  return null;
 }
 
 function getNextSortName(elem, newElemClicked) {
@@ -63,11 +69,12 @@ export function updateHeaderSort(hName, fName, keepCurrent = false) {
 
   const fieldName = !keepCurrent
     ? fName.toLowerCase()
-    : currentSort.id.split("-")[0];
+    : currentSort.id.split("-")[1];
 
   const newSortFieldElem = document.querySelector(
     `#${headerName}-${fieldName}`
   );
+
   if (
     !newSortFieldElem ||
     !newSortFieldElem.classList.contains(CONSTANTS.CLASS_NAMES.SORTABLE)
@@ -82,7 +89,7 @@ export function updateHeaderSort(hName, fName, keepCurrent = false) {
     return;
   }
 
-  sortData({ listName: hName, fieldName: fName, order: nextSortStatus });
+  sortData({ listName: hName, fieldName, order: nextSortStatus });
 }
 
 export function updateSortStatus(headerElem, elem) {
@@ -156,12 +163,17 @@ export function sortData({ listName, fieldName, order }) {
     return;
   }
 
-  const controlIdxInParent = entryOrder.findIndex((n) => n === fieldName);
+  const fieldNameUpper = fieldName.toUpperCase();
+
+  const controlIdxInParent = entryOrder.findIndex(
+    (n) => n === fieldNameUpper.toUpperCase()
+  );
 
   if (controlIdxInParent < 0) {
     return;
   }
 
+  // CONTINUE FROM HERE
   entryList.sort((elemA, elemB) => {
     const controlA = Array.from(elemA.children)[controlIdxInParent];
     const controlB = Array.from(elemB.children)[controlIdxInParent];
@@ -177,12 +189,12 @@ export function sortData({ listName, fieldName, order }) {
     let controlAValParsed, controlBValParsed;
 
     if (
-      fieldName === CONSTANTS.SORT_FIELDS.FROM ||
-      fieldName === CONSTANTS.SORT_FIELDS.TO
+      fieldNameUpper === CONSTANTS.SORT_FIELDS.FROM ||
+      fieldNameUpper === CONSTANTS.SORT_FIELDS.TO
     ) {
       controlAValParsed = new Date(controlAVal);
       controlBValParsed = new Date(controlBVal);
-    } else if (fieldName === CONSTANTS.SORT_FIELDS.PERCENT) {
+    } else if (fieldNameUpper === CONSTANTS.SORT_FIELDS.PERCENT) {
       controlAValParsed = parseInt(controlAVal);
       controlBValParsed = parseInt(controlBVal);
     } else {
@@ -198,4 +210,13 @@ export function sortData({ listName, fieldName, order }) {
   entryList.forEach((elem) => {
     entryDiv.appendChild(elem);
   });
+}
+
+export function sortListOnElemAdded(listElem) {
+  if (!listElem || !listElem.parentElement) {
+    return;
+  }
+  const listName = listElem.parentElement.id.split("-")[0];
+
+  updateHeaderSort(listName, null, true);
 }

@@ -19,6 +19,8 @@ import {
   toggleModalLaunchPropOnBtn,
 } from "./utils.js";
 
+import { sortListOnElemAdded } from "./sorting.js";
+
 import { parseModalContent } from "./modal-parser.js";
 
 const baseEntryControls = [
@@ -309,6 +311,7 @@ function saveModalContent() {
   elemArr.forEach((entryDiv) => activeEntryList.append(entryDiv));
   clearModalContent();
   closeModal();
+  sortListOnElemAdded(activeEntryList);
 }
 
 export {

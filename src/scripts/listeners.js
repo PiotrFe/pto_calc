@@ -6,6 +6,9 @@ import {
   setTrashActive,
   submitActiveFormEntry,
 } from "./comp-functions.js";
+
+import { sortListOnElemAdded } from "./sorting.js";
+
 import { addListEntryClassNames, addEntryFieldClassNames } from "./styling.js";
 
 // ADDING
@@ -116,7 +119,11 @@ function activeEntryListener(e) {
 
 function submissionListener(e) {
   e.preventDefault();
-  convertEntryToDiv(e.target);
+  const success = convertEntryToDiv(e.target);
+
+  if (success) {
+    sortListOnElemAdded(getListByEntryName(e.target.dataset.entrytype));
+  }
 }
 
 function setItemActive(elem) {
@@ -183,7 +190,6 @@ function convertEntryToDiv(entryElem, replaceExisting = true) {
 
   addListEntryClassNames(divElem);
   addStaticDivClickListener(divElem);
-
   clearControlListeners(entryElem);
 
   if (replaceExisting) {
