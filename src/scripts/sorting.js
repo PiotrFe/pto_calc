@@ -1,6 +1,8 @@
 import { CONSTANTS, entryOrder } from "./constants.js";
 import { getListByEntryName } from "./utils.js";
 
+const currSortRegex = /sorted-\w{3,4}/gi;
+
 function getCurrentSort(headerElem) {
   const currentSortArr = Array.from(
     document.querySelectorAll(`.${CONSTANTS.CLASS_NAMES.SORTED}`)
@@ -15,7 +17,19 @@ function getCurrentSort(headerElem) {
   return currentSort;
 }
 
-function getNextSort(elem, newElemClicked) {
+function getCurrentSortName(elem) {
+  if (!elem || !elem.classList) {
+    return null;
+  }
+
+  return Array.from(elem.classList).find((className) => {
+    const regexMatch = className.match(currSortRegex);
+
+    return regexMatch?.[0];
+  });
+}
+
+function getNextSortName(elem, newElemClicked) {
   if (!elem || newElemClicked) {
     return CONSTANTS.SORT_STATUS.DESC;
   }
@@ -34,13 +48,23 @@ function getNextSort(elem, newElemClicked) {
   }
 }
 
-export function updateHeaderSort(hName, fName) {
-  if (!hName || !fName) {
+export function updateHeaderSort(hName, fName, keepCurrent = false) {
+  if (!hName || (!fName && !keepCurrent)) {
     return;
   }
+
   const headerName = hName.toLowerCase();
-  const fieldName = fName.toLowerCase();
   const parentHeaderElem = document.querySelector(`#${headerName}-list`);
+  const currentSort = getCurrentSort(parentHeaderElem);
+
+  if (keepCurrent && !currentSort) {
+    return;
+  }
+
+  const fieldName = !keepCurrent
+    ? fName.toLowerCase()
+    : currentSort.id.split("-")[0];
+
   const newSortFieldElem = document.querySelector(
     `#${headerName}-${fieldName}`
   );
@@ -50,11 +74,14 @@ export function updateHeaderSort(hName, fName) {
   ) {
     return;
   }
-  const nextSortStatus = updateSortStatus(parentHeaderElem, newSortFieldElem);
+  const nextSortStatus = keepCurrent
+    ? getCurrentSortName(currentSort)
+    : updateSortStatus(parentHeaderElem, newSortFieldElem);
 
   if (nextSortStatus === CONSTANTS.SORT_STATUS.NONE) {
     return;
   }
+
   sortData({ listName: hName, fieldName: fName, order: nextSortStatus });
 }
 
@@ -74,7 +101,7 @@ export function updateSortStatus(headerElem, elem) {
     updateSortIconOnHeader({ elem: currentSortedElem });
   }
 
-  const nextSortOrder = getNextSort(currentSortedElem, newElemClicked);
+  const nextSortOrder = getNextSortName(currentSortedElem, newElemClicked);
 
   if (nextSortOrder === CONSTANTS.SORT_STATUS.DESC) {
     elem.classList.add(CONSTANTS.CLASS_NAMES.SORTED);
