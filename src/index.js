@@ -42,6 +42,6 @@ function init() {
 
   addHeaderListeners();
 
-  addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.ABSENCE });
-  addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.EMPLOYMENT });
+  // addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.ABSENCE });
+  // addListEntry({ entryType: CONSTANTS.ENTRY_TYPES.EMPLOYMENT });
 }
