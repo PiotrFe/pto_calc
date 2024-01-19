@@ -14,9 +14,11 @@ import {
   closeModal,
   getActiveEntry,
   getActiveEntryList,
+  getEntryDatValues,
   getListByEntryName,
   makeSelectable,
   toggleModalLaunchPropOnBtn,
+  updateErrorHighlight,
 } from "./utils.js";
 
 import { sortListOnElemAdded } from "./sorting.js";
@@ -305,13 +307,51 @@ function saveModalContent() {
       fieldValues: fieldValuesArr.filter((v) => v),
     });
 
-    return convertEntryToDiv(entryForm, false);
+    return convertEntryToDiv({ entryElem: entryForm, replaceExisting: false });
   });
 
   elemArr.forEach((entryDiv) => activeEntryList.append(entryDiv));
   clearModalContent();
   closeModal();
   sortListOnElemAdded(activeEntryList);
+  highlightOverlappingEntries({ listElem: getListByEntryName(entryType) });
+}
+
+function highlightOverlappingEntries({ listElem }) {
+  if (!listElem || !listElem.children) {
+    return;
+  }
+
+  const entryList = Array.from(listElem.children);
+
+  if (entryList?.length < 2) {
+    return;
+  }
+
+  entryList.forEach((entry, currIdx, arr) => {
+    if (currIdx + 1 === arr.length) {
+      return;
+    }
+
+    const [dateFrom, dateTo] = getEntryDatValues(entry);
+    const duplicateEntry = arr.slice(currIdx + 1).find((otherEntry) => {
+      const [otherDateFrom, otherDateTo] = getEntryDatValues(otherEntry);
+
+      return (
+        (dateFrom >= otherDateFrom && dateFrom <= otherDateTo) ||
+        (dateTo >= otherDateFrom && dateTo <= otherDateTo)
+      );
+    });
+
+    console.log({ duplicateEntry });
+
+    if (duplicateEntry) {
+      updateErrorHighlight(entry, true);
+      updateErrorHighlight(duplicateEntry, true);
+    } else {
+      updateErrorHighlight(entry, false);
+    }
+  });
 }
 
 export {
@@ -322,6 +362,7 @@ export {
   clearActiveListSelection,
   deleteActiveEntry,
   getListEntry,
+  highlightOverlappingEntries,
   saveModalContent,
   setTrashActive,
   submitActiveFormEntry,

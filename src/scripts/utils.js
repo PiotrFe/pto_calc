@@ -81,3 +81,28 @@ export const getListTypeFromListElem = (listElem) => {
     return;
   }
 };
+
+export const getEntryDatValues = (entryElem) => {
+  if (!entryElem || !entryElem.children) {
+    return [];
+  }
+
+  const controlA = Array.from(entryElem.children)[0];
+  const controlB = Array.from(entryElem.children)[1];
+  const dateFrom = new Date(controlA.dataset.entryVal);
+  const dateTo = new Date(controlB.dataset.entryVal);
+
+  return [dateFrom, dateTo];
+};
+
+export const updateErrorHighlight = (entryElem, add) => {
+  if (!entryElem?.classList) {
+    return;
+  }
+
+  if (add) {
+    entryElem.classList.add("error");
+  } else {
+    entryElem.classList.remove("error");
+  }
+};

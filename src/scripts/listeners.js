@@ -3,6 +3,7 @@ import { CONSTANTS } from "./constants.js";
 import {
   clearActiveListSelection,
   getListEntry,
+  highlightOverlappingEntries,
   setTrashActive,
   submitActiveFormEntry,
 } from "./comp-functions.js";
@@ -119,10 +120,12 @@ function activeEntryListener(e) {
 
 function submissionListener(e) {
   e.preventDefault();
-  const success = convertEntryToDiv(e.target);
+  const success = convertEntryToDiv({ entryElem: e.target });
 
   if (success) {
-    sortListOnElemAdded(getListByEntryName(e.target.dataset.entrytype));
+    const listElem = getListByEntryName(e.target.dataset.entrytype);
+    sortListOnElemAdded(listElem);
+    highlightOverlappingEntries({ listElem });
   }
 }
 
@@ -153,7 +156,7 @@ function staticDivClickListener(e) {
 
 // HELPERS
 
-function convertEntryToDiv(entryElem, replaceExisting = true) {
+function convertEntryToDiv({ entryElem, replaceExisting = true }) {
   if (!entryElem) {
     return;
   }
