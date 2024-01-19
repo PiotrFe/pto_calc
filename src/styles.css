@@ -34,6 +34,7 @@ html {
 
 .entry-lists {
   width: 70%;
+  margin-bottom: 150px;
 }
 
 #modal-text-area {
@@ -82,6 +83,7 @@ html {
 
 .list-entries {
   width: 100%;
+  transition: background-color, 0.2s;
 }
 
 .list-entry-control--small {
@@ -91,10 +93,18 @@ html {
 .list-entry,
 .header-entry {
   width: 100%;
-  height: 35px;
   display: flex;
   align-items: center;
   user-select: none;
+}
+
+.list-entry {
+  height: 55px;
+  padding: 0 7px;
+}
+
+.header-entry {
+  height: 35px;
 }
 
 .list-entry-control-static {

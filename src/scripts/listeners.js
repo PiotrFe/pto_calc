@@ -174,9 +174,9 @@ function convertEntryToDiv(entryElem, replaceExisting = true) {
       childDiv.textContent = inputElem.value;
     } else {
       const d = new Date(inputElem.value);
-      childDiv.textContent = `${d.getDate()}-${
-        `${d.getMonth()}`.padStart(1, 0) + 1
-      }-${d.getFullYear()}`;
+      childDiv.textContent = `${`${d.getDate()}`.padStart(2, 0)}-${`${
+        d.getMonth() + 1
+      }`.padStart(2, 0)}-${d.getFullYear()}`;
     }
 
     return childDiv;
