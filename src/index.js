@@ -2,6 +2,7 @@ import {
   addListEntry,
   addListEntryOnClick,
   deleteActiveEntry,
+  runCalculation,
   saveModalContent,
   toggleActiveListOnClick,
   updateEntrySelectionOnPage,
@@ -15,9 +16,7 @@ init();
 
 function init() {
   const addBtn = document.getElementById(CONSTANTS.IDS.BTN_ADD_LIST_ENTRY);
-  const launchModalButton = document.getElementById(
-    CONSTANTS.IDS.BTN_ADD_LIST_ENTRY_MULTIPLE
-  );
+
   const saveModalContentBtn = document.getElementById(
     CONSTANTS.IDS.SAVE_MODAL_CONTENT_BUTTON
   );
@@ -27,6 +26,8 @@ function init() {
   const pageElem = document.querySelector(
     `.${CONSTANTS.CLASS_NAMES.PAGE_MAIN}`
   );
+
+  const calcButton = document.getElementById(CONSTANTS.IDS.BTN_CALCULATE);
 
   const employmentEntries = document.getElementById(
     CONSTANTS.IDS.EMPLOYMENT_ENTRIES
@@ -39,6 +40,7 @@ function init() {
   employmentEntries.addEventListener("click", toggleActiveListOnClick);
   pageElem.addEventListener("click", updateEntrySelectionOnPage);
   saveModalContentBtn.addEventListener("click", saveModalContent);
+  calcButton.addEventListener("click", runCalculation);
 
   addHeaderListeners();
 

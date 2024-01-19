@@ -106,3 +106,8 @@ export const updateErrorHighlight = (entryElem, add) => {
     entryElem.classList.remove("error");
   }
 };
+
+export const toggleCalcView = () => {
+  const pageElem = document.getElementById(CONSTANTS.IDS.PAGE_CONTAINER);
+  pageElem.classList.toggle("translated");
+};

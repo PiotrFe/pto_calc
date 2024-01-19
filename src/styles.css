@@ -16,20 +16,38 @@ html {
   overflow: auto;
 }
 
+#page-content,
+#calc-content {
+  height: 100%;
+}
+
 .page-background {
-  width: 100vw;
+  height: 100%;
   background-color: cornflowerblue;
   display: flex;
-  justify-content: center;
+}
+
+.page-container {
+  display: flex;
+  transition: transform 0.5s;
+}
+
+.translated {
+  transform: translate(-85vw);
 }
 
 .page-content {
-  width: 80%;
+  width: 70vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: white;
+  margin-left: 15vw;
+}
+
+.page-translated {
+  transform: translateX(-50vw);
 }
 
 .entry-lists {
@@ -166,6 +184,12 @@ html {
   align-items: center;
   background-color: var(--bs-light);
   border-radius: 50px;
+}
+
+.calc-btns {
+  position: absolute;
+  right: 25px;
+  top: 30px;
 }
 
 /************************

@@ -24,55 +24,63 @@
   </head>
   <body>
     <div id="page-main" class="page-main">
-      <div class="page-background container-fluid">
-        <div id="page-content" class="page-content">
-          <div class="entry-lists">
-            <div id="employment-list" class="entry-list">
-              <h1 class="display-4 section-title">Employment</h1>
-              <div id="employment-header" class="entry-list-header">
-                <div class="row header-entry mb-1">
-                  <div id="employment-from" class="col-3 clickable sortable">
-                    <label class="form-label clickable">From</label>
-                  </div>
-                  <div id="employment-to" class="col-3 clickable sortable">
-                    <label class="form-label clickable">To</label>
-                  </div>
-                  <div
-                    id="employment-percent"
-                    class="col-2 list-entry-control--small clickable sortable"
-                  >
-                    <label class="form-label clickable">Percent</label>
-                  </div>
-                </div>
-              </div>
-              <div id="employment-entries" class="list-entries clickable"></div>
-            </div>
-            <div id="absence-list" class="entry-list">
-              <h1 class="display-4 section-title">Absences</h1>
-              <div id="absence-header" class="entry-list-header">
-                <div class="row header-entry mb-3">
-                  <div id="absence-from" class="col-3 clickable sortable">
-                    <label class="form-label clickable">From</label>
-                  </div>
-                  <div id="absence-to" class="col-3 clickable sortable">
-                    <label class="form-label clickable">To</label>
-                  </div>
-                  <div
-                    id="absence-percent"
-                    class="col-2 list-entry-control--small clickable sortable"
-                  >
-                    <label class="form-label clickable">Percent</label>
-                  </div>
-                  <div
-                    id="absence-reason"
-                    class="col list-entry-control clickable sortable"
-                  >
-                    <label class="form-label clickable">Reason</label>
+      <div class="page-background">
+        <div id="page-container" class="page-container">
+          <div id="page-content" class="page-content">
+            <div class="entry-lists">
+              <div id="employment-list" class="entry-list">
+                <h1 class="display-4 section-title">Employment</h1>
+                <div id="employment-header" class="entry-list-header">
+                  <div class="row header-entry mb-1">
+                    <div id="employment-from" class="col-3 clickable sortable">
+                      <label class="form-label clickable">From</label>
+                    </div>
+                    <div id="employment-to" class="col-3 clickable sortable">
+                      <label class="form-label clickable">To</label>
+                    </div>
+                    <div
+                      id="employment-percent"
+                      class="col-2 list-entry-control--small clickable sortable"
+                    >
+                      <label class="form-label clickable">Percent</label>
+                    </div>
                   </div>
                 </div>
+                <div
+                  id="employment-entries"
+                  class="list-entries clickable"
+                ></div>
               </div>
-              <div id="absence-entries" class="list-entries clickable"></div>
+              <div id="absence-list" class="entry-list">
+                <h1 class="display-4 section-title">Absences</h1>
+                <div id="absence-header" class="entry-list-header">
+                  <div class="row header-entry mb-3">
+                    <div id="absence-from" class="col-3 clickable sortable">
+                      <label class="form-label clickable">From</label>
+                    </div>
+                    <div id="absence-to" class="col-3 clickable sortable">
+                      <label class="form-label clickable">To</label>
+                    </div>
+                    <div
+                      id="absence-percent"
+                      class="col-2 list-entry-control--small clickable sortable"
+                    >
+                      <label class="form-label clickable">Percent</label>
+                    </div>
+                    <div
+                      id="absence-reason"
+                      class="col list-entry-control clickable sortable"
+                    >
+                      <label class="form-label clickable">Reason</label>
+                    </div>
+                  </div>
+                </div>
+                <div id="absence-entries" class="list-entries clickable"></div>
+              </div>
             </div>
+          </div>
+          <div id="calc-content" class="page-content calc-content">
+            THIS IS THE CALCULATION CONTENT
           </div>
         </div>
       </div>
@@ -93,6 +101,11 @@
         class="list-entry-icon icon-disabled clickable"
       >
         <i class="bi bi-trash"></i>
+      </div>
+    </div>
+    <div class="calc-btns">
+      <div id="btn-calc" class="list-entry-icon clickable">
+        <i class="bi bi-calculator"></i>
       </div>
     </div>
     <div

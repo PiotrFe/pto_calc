@@ -17,6 +17,7 @@ import {
   getEntryDatValues,
   getListByEntryName,
   makeSelectable,
+  toggleCalcView,
   toggleModalLaunchPropOnBtn,
   updateErrorHighlight,
 } from "./utils.js";
@@ -354,6 +355,10 @@ function highlightOverlappingEntries({ listElem }) {
   });
 }
 
+function runCalculation() {
+  toggleCalcView();
+}
+
 export {
   addListEntry,
   addListEntryOnClick,
@@ -363,6 +368,7 @@ export {
   deleteActiveEntry,
   getListEntry,
   highlightOverlappingEntries,
+  runCalculation,
   saveModalContent,
   setTrashActive,
   submitActiveFormEntry,
